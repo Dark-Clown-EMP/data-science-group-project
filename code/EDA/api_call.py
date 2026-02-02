@@ -51,6 +51,8 @@ if response.status_code == 200:
     print(df[['time', 'screenTemperature', 'windSpeed10m']].head())
     
     # Save for your project
+    from pathlib import Path
+    Path(".data").mkdir(parents=True, exist_ok=True)
     df.to_csv(".data/live_weather_forecast.csv", index=False)
     print("\n💾 Saved to 'live_weather_forecast.csv'")
 else:
