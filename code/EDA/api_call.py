@@ -49,10 +49,10 @@ if response.status_code == 200:
     df = pd.DataFrame(features)
     print("\n--- LIVE FORECAST DATA (Next 24-48 Hours) ---")
     print(df[['time', 'screenTemperature', 'windSpeed10m']].head())
-    
+    file_loc = "live_weather_forecast" + "_lon_" + str(longitiude) + "_lat_" + str(latitude) + ".csv"
     # Save for your project
-    df.to_csv(".data/live_weather_forecast.csv", index=False)
-    print("\n💾 Saved to 'live_weather_forecast.csv'")
+    df.to_csv("./data/" + file_loc, index=False)
+    print("\n💾 Saved to " + file_loc)
 else:
     print(f"❌ Error: {response.status_code}")
     print(response.text)
