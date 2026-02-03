@@ -1,4 +1,4 @@
-requests
+dotenv
 pandas
 numpy
-dotenv
+requests

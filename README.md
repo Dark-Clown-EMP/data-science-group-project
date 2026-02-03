@@ -5,3 +5,4 @@ pip install -r requirements.txt
 API keys necessary should be added in a file in the root directory named .env and should be given the following names:
 
 Pritha Bera
+Fatima Akhtar
