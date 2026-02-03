@@ -3,6 +3,10 @@ import pandas as pd
 import json
 from dotenv import load_dotenv
 import os
+import time
+from pathlib import Path
+
+
 # Load environment variables from .env file
 load_dotenv()
 # 1. SETUP YOUR CREDENTIALS
@@ -11,7 +15,7 @@ API_TOKEN = os.getenv("MET_OFFICE_API_KEY")
 
 # 2. DEFINE THE REQUEST
 # URL for Hourly Spot Data (Live Forecast)
-url = "https://data.hub.api.metoffice.gov.uk/sitespecific/v0/point/hourly"
+url = "https://archive-api.open-meteo.com/v1/archive"
 
 start_date = "2020-01-01"
 end_date = "2025-12-31"
@@ -62,37 +66,47 @@ headers = {
     "accept": "application/json"
 }
 
+def get_region_data():
+    return uk_regions
 
 # 4. CHECK RESULTS
 for key, location in uk_regions.items():
+    print(f"📡 Fetching data for {key}...")
+
     params = {
-    "latitude": location[0],
-    "longitude": location[1],
-    "start_date": start_date,  # 5 Years of History
-	"end_date": end_date,
-    "excludeParameterMetadata": "true",
-    "includeLocationName": "true"
+        "latitude": location[0],
+        "longitude": location[1],
+        "start_date": start_date,
+        "end_date": end_date,
+        "hourly": "temperature_2m,wind_speed_10m,wind_speed_80m,shortwave_radiation,direct_normal_irradiance,cloud_cover",
+        "timezone": "GMT" # Crucial for alignment
     }
-    # 3. FETCH THE DATA
-    print("📡 Connecting to Met Office Live API...")
-    response = requests.get(url, headers=headers, params=params)
+    file_name = f"weather_{key}.csv"
+    if Path("./data/" + file_name).exists():
+        print('✅ Data already exists')
+        continue
+
+    # Open-Meteo does NOT need headers
+    response = requests.get(url, params=params)
+
     if response.status_code == 200:
-        print("✅ Success! Data Received.")
         data = response.json()
-    
-        # Extract the time series data
-        features = data['features'][0]['properties']['timeSeries']
-    
-        # Convert to DataFrame for viewing
-        df = pd.DataFrame(features)
-        print("\n--- LIVE FORECAST DATA (Next 24-48 Hours) ---")
-        print(df[['time', 'screenTemperature', 'windSpeed10m']].head())
-        file_loc = "live_weather_forecast" + "_lat_" + str(location[0]) + "_lon_" + str(location[1]) + key + ".csv"
-        # Save for your project
-        df.to_csv("./data/" + file_loc, index=False)
-        print("\n💾 Saved to " + file_loc)
+        
+        # Open-Meteo returns data directly in the 'hourly' key
+        hourly_data = data['hourly']
+        
+        # Create DataFrame
+        df = pd.DataFrame(hourly_data)
+        
+        # Save
+        df.to_csv(f"./data/{file_name}", index=False)
+        print(f"✅ Saved {len(df)} rows to ./data/{file_name}")
+        
     else:
         print(f"❌ Error: {response.status_code}")
         print(response.text)
-        print("\nTIP: If you get a 401 Error, go back to 'My Applications' on the Met Office site")
-        print("and copy the short 'Client ID' (it is shorter than the token you pasted).")
+    
+    # Polite sleep to respect the free API
+    time.sleep(1.5)
+
+print("\n🚀 All downloads complete.")

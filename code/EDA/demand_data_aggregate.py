@@ -2,6 +2,9 @@ import pandas as pd
 
 year_list = ['2020', '2021', '2022', '2023', '2024', '2025']
 
+def get_year_list():
+    return year_list
+
 csv_loc_init = './data/demanddata_'
 
 for year in year_list:
