@@ -1,0 +1,37 @@
+REGIONS FROM final_model_data.csv (for map slides)
+
+Solar regions (Solar_* columns):
+- Eng_East_Midlands
+- Eng_East_Norfolk
+- Eng_East_Suffolk
+- Eng_London
+- Eng_South_Kent
+- Eng_South_Hampshire
+- Eng_South_Cornwall
+- Eng_South_Bristol
+
+Wind regions (Wind10m_* columns):
+- Scot_Highlands
+- Scot_Aberdeenshire
+- Scot_Borders
+- Wales_North_Gwynedd
+- Eng_North_Cumbria
+- Eng_Yorkshire
+- Eng_East_Norfolk
+- Eng_East_Suffolk
+
+Notes for mapping to UK map:
+- Eng_East_Norfolk → County of Norfolk
+- Eng_East_Suffolk → County of Suffolk
+- Eng_East_Midlands → East Midlands region (Derbyshire/Leicestershire/Nottinghamshire/etc.)
+- Eng_London → Greater London area
+- Eng_South_Kent → Kent / Medway
+- Eng_South_Hampshire → Hampshire / Portsmouth / Southampton / Isle of Wight
+- Eng_South_Cornwall → Cornwall / Isles of Scilly
+- Eng_South_Bristol → Bristol + North Somerset + Bath/NE Somerset + South Gloucestershire
+- Scot_Highlands → Highland region
+- Scot_Aberdeenshire → Aberdeenshire + Aberdeen City
+- Scot_Borders → Scottish Borders
+- Wales_North_Gwynedd → Gwynedd + North Wales belt
+- Eng_North_Cumbria → Cumberland + Westmorland and Furness
+- Eng_Yorkshire → Yorkshire & Humber area

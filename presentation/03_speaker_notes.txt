@@ -1,0 +1,34 @@
+SPEAKER NOTES (5 MIN TOTAL)
+
+SLIDE 1 (0:00–0:20)
+“Hi everyone. We’re forecasting net electricity demand in Great Britain using regional weather and regional solar generation.”
+
+SLIDE 2 (0:20–0:50)
+“Our question: How do regional temperature and wind conditions, plus regional solar generation, explain and predict net electricity demand in a 6‑month window? This is predictive, not causal.”
+
+SLIDE 3 (0:50–1:25)
+“We use three UK‑licensed datasets: NESO Historic Demand, PV‑Live regional solar, and Met Office DataPoint weather. All are public and licensed.”
+
+SLIDE 4 (1:25–1:55)
+“Pipeline: PV‑Live GSPs are mapped to official ONS boundaries and to our project regions. Weather stations are aggregated the same way. All timestamps are aligned to UTC.”
+
+SLIDE 5 (1:55–2:25)
+“This map shows the solar‑producing regions we model: East Midlands, Norfolk, Suffolk, London, Kent, Hampshire, Cornwall, and Bristol area.”
+
+SLIDE 6 (2:25–2:55)
+“This map shows wind‑influenced regions: Scottish Highlands, Aberdeenshire, Borders, North Wales, North Cumbria, Yorkshire, Norfolk, and Suffolk.”
+
+SLIDE 7 (2:55–3:30)
+“EDA highlights meaningful correlations: ND vs regional temperatures; embedded solar vs Solar_*; embedded wind vs Wind10m_*.”
+
+SLIDE 8 (3:30–4:05)
+“Model plan: baseline first, then Random Forest and XGBoost, and LSTM for temporal dynamics. We’ll evaluate with MAE/RMSE and use time‑based splits.”
+
+SLIDE 9 (4:05–4:25)
+“Risks: BST/UTC mismatch, PV‑Live estimates, and mapping coverage. We address these with explicit timestamp normalization and mapping audit files.”
+
+SLIDE 10 (4:25–4:45)
+“Project plan: Week 1 weather + time alignment, Week 2 EDA + baseline, Week 3 advanced models, Week 4 final analysis and reporting.”
+
+SLIDE 11 (4:45–5:00)
+“Thanks — we welcome feedback on model choices and evaluation.”
