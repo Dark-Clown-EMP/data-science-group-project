@@ -1,9 +1,13 @@
+import math
+
 import numpy as np
 from tensorflow import keras
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import LSTM, Dense, Dropout
 import keras_tuner as kt
 from sklearn.metrics import mean_squared_error
+
+
 
 def tune_lstm_model(X_train_2d, y_train, X_test_2d, y_test, max_trials=10):
     """
@@ -44,6 +48,7 @@ def tune_lstm_model(X_train_2d, y_train, X_test_2d, y_test, max_trials=10):
         max_trials=max_trials,
         executions_per_trial=1,
         directory='tuning_results',
+        seed = 42,
         project_name='energy_demand_lstm'
     )
     
@@ -98,7 +103,7 @@ def tune_lstm_model(X_train_2d, y_train, X_test_2d, y_test, max_trials=10):
     print(f"Train RMSE: {train_rmse:.4f}")
     print(f"Test RMSE:  {test_rmse:.4f}")
     # Return the parameters, the model, and the reshaped data so you can train it next
-    return best_hps, best_model, X_train_3d, X_test_3d
+    return best_hps, best_model, X_train_3d, X_test_3d, y_test_pred, y_train_pred
 
 # --- How to call the function ---
 # Assuming X_train, y_train, X_test, y_test are already created from your previous code:
