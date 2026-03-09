@@ -55,6 +55,7 @@ axes[2].set_title('Distribution of Embedded Wind')
 axes[2].set_ylabel('Embedded Wind (MW)')
 
 plt.tight_layout()
+plt.savefig('Figures/distribution.png', dpi=300)
 
 # Plot 2: Average National Demand by Month
 plt.figure(figsize=(8,4))
@@ -64,6 +65,7 @@ plt.xlabel('Month')
 plt.ylabel('National Demand')
 plt.grid(ls='--', alpha=0.6)
 plt.tight_layout()
+plt.savefig('Figures/national_demand_vs_month.png', dpi=300)
 
 # Plot 3: Average National Demand by Hour in Different Seasons
 plt.figure(figsize=(9,4))
@@ -86,13 +88,18 @@ plt.ylabel('National Demand')
 plt.grid(ls='--', alpha=0.6)
 plt.legend(title='Season', fontsize=9)
 plt.tight_layout()
+plt.savefig('Figures/seasonal_nd_vs_hour.png', dpi=300)
 
 # Plot 4 & 5: Plots to show that combining MET and NESO data is valid.
 # Plot 4: Embedded Solar vs Solar Radiation in East Norfolk
 plt.figure(figsize=(10, 6))
 correlation_solar = df['Solar_Eng_East_Norfolk'].corr(df['EMBEDDED_SOLAR_GENERATION'])
 
+slope, intercept = np.polyfit(df['Solar_Eng_East_Norfolk'], df['EMBEDDED_SOLAR_GENERATION'], 1)
+trend_line = slope * df['Solar_Eng_East_Norfolk'] + intercept
+
 plt.scatter(df['Solar_Eng_East_Norfolk'], df['EMBEDDED_SOLAR_GENERATION'], alpha=0.5, s=10, color='orange')
+plt.plot(df['Solar_Eng_East_Norfolk'], trend_line, color='black', label='Trend Line')
 plt.xlabel('Solar Radiation - East Norfolk (W/m²)')
 plt.ylabel('Embedded Solar Generation (MW)')
 plt.title('Embedded Solar Generation vs East Norfolk Solar Radiation')
@@ -100,122 +107,105 @@ plt.text(0.05, 0.95, f'Correlation: {correlation_solar:.4f}', transform=plt.gca(
          fontsize=12, verticalalignment='top', bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.5))
 plt.grid(ls='--', alpha=0.6)
 plt.tight_layout()
+plt.savefig('Figures/solar_corr.png', dpi=300)
 
 # Plot 5: Embedded Wind vs Wind Speed in East Norfolk
 plt.figure(figsize=(10, 6))
 correlation_wind = df['Wind10m_Eng_East_Norfolk'].corr(df['EMBEDDED_WIND_GENERATION'])
 
+slope, intercept = np.polyfit(df['Wind10m_Eng_East_Norfolk'], df['EMBEDDED_WIND_GENERATION'], 1)
+trend_line = slope * df['Wind10m_Eng_East_Norfolk'] + intercept
+
 plt.scatter(df['Wind10m_Eng_East_Norfolk'], df['EMBEDDED_WIND_GENERATION'], alpha=0.5, s=10, color='green')
+plt.plot(df['Wind10m_Eng_East_Norfolk'], trend_line, color='black', label='Trend Line')
 plt.xlabel('Wind Speed - East Norfolk (m/s)')
 plt.ylabel('Embedded Wind Generation (MW)')
 plt.title('Embedded Wind Generation vs East Norfolk Wind Speed')
 plt.text(0.05, 0.95, f'Correlation: {correlation_wind:.4f}', transform=plt.gca().transAxes, 
          fontsize=12, verticalalignment='top', bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.5))
-temp_by_hour = df.groupby('hour')[temp_cols].mean()
-temp_by_month = df.groupby('month')[temp_cols].mean()
-temp_by_year = df.groupby('year')[temp_cols].mean()
 plt.grid(ls='--', alpha=0.6)
 plt.tight_layout()
+plt.savefig('Figures/wind_corr.png', dpi=300)
 
-# Plot 6a: Regional variations by Hour (solar, wind, temp)
-fig, axes = plt.subplots(1, 3, figsize=(18, 4))
+# Plot 6: National Demand vs. Temperature
+plt.figure(figsize=(10, 6))
+correlation_temp = df['Temp_Eng_East_Norfolk'].corr(df['ND'])
 
-# solar by hour
-solar_by_hour = df.groupby('hour')[solar_cols].mean()
-for col in solar_cols:
-    axes[0].plot(solar_by_hour.index, solar_by_hour[col], label=col, alpha=0.7)
-axes[0].set_xlabel('Hour of Day')
-axes[0].set_ylabel('Solar Radiation (W/m²)')
-axes[0].set_title('Solar Radiation by Hour')
-axes[0].legend(fontsize=7, loc='best')
-axes[0].grid(ls='--', alpha=0.6)
+slope, intercept = np.polyfit(df['Temp_Eng_East_Norfolk'], df['ND'], 1)
+trend_line = slope * df['Temp_Eng_East_Norfolk'] + intercept
 
-# wind by hour
-wind_by_hour = df.groupby('hour')[wind_cols].mean()
-for col in wind_cols:
-    axes[1].plot(wind_by_hour.index, wind_by_hour[col], label=col, alpha=0.7)
-axes[1].set_xlabel('Hour of Day')
-axes[1].set_ylabel('Wind Speed (m/s)')
-axes[1].set_title('Wind Speed by Hour')
-axes[1].legend(fontsize=7, loc='best')
-axes[1].grid(ls='--', alpha=0.6)
-
-# temp by hour
-temp_by_hour = df.groupby('hour')[temp_cols].mean()
-for col in temp_cols:
-    axes[2].plot(temp_by_hour.index, temp_by_hour[col], label=col, alpha=0.7)
-axes[2].set_xlabel('Hour of Day')
-axes[2].set_ylabel('Temperature (°C)')
-axes[2].set_title('Temperature by Hour')
-axes[2].legend(fontsize=7, loc='best')
-axes[2].grid(ls='--', alpha=0.6)
-
+plt.scatter(df['Temp_Eng_East_Norfolk'], df['ND'], alpha=0.5, s=10, color='darkred')
+plt.plot(df['Temp_Eng_East_Norfolk'], trend_line, color='black', label='Trend Line')
+plt.xlabel('Temperature - East Norfolk (°C)')
+plt.ylabel('National Demand (MW)')
+plt.title('National Demand vs East Norfolk Temperature')
+plt.text(0.05, 0.95, f'Correlation: {correlation_temp:.4f}', transform=plt.gca().transAxes, 
+         fontsize=12, verticalalignment='top', bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.5))
+plt.grid(ls='--', alpha=0.6)
 plt.tight_layout()
+plt.savefig('Figures/temp_corr.png', dpi=300)
 
-# Plot 6b: Regional variations by Month (solar, wind, temp)
-fig, axes = plt.subplots(1, 3, figsize=(18, 4))
+# insert plot 7 here
+import os
+import matplotlib.pyplot as plt
 
-solar_by_month = df.groupby('month')[solar_cols].mean()
-for col in solar_cols:
-    axes[0].plot(solar_by_month.index, solar_by_month[col], label=col, alpha=0.7)
-axes[0].set_xlabel('Month')
-axes[0].set_ylabel('Solar Radiation (W/m²)')
-axes[0].set_title('Solar Radiation by Month')
-axes[0].legend(fontsize=7, loc='best')
-axes[0].grid(ls='--', alpha=0.6)
+# Create folder if it doesn't exist
+os.makedirs("Figures", exist_ok=True)
 
-wind_by_month = df.groupby('month')[wind_cols].mean()
-for col in wind_cols:
-    axes[1].plot(wind_by_month.index, wind_by_month[col], label=col, alpha=0.7)
-axes[1].set_xlabel('Month')
-axes[1].set_ylabel('Wind Speed (m/s)')
-axes[1].set_title('Wind Speed by Month')
-axes[1].legend(fontsize=7, loc='best')
-axes[1].grid(ls='--', alpha=0.6)
+# Define the regions for each variable
+wind_cols = ['Wind10m_Scot_Highlands', 'Wind10m_Wales_North_Gwynedd', 
+             'Wind10m_Eng_East_Suffolk', 'Wind10m_Eng_East_Norfolk']
 
-temp_by_month = df.groupby('month')[temp_cols].mean()
-for col in temp_cols:
-    axes[2].plot(temp_by_month.index, temp_by_month[col], label=col, alpha=0.7)
-axes[2].set_xlabel('Month')
-axes[2].set_ylabel('Temperature (°C)')
-axes[2].set_title('Temperature by Month')
-axes[2].legend(fontsize=7, loc='best')
-axes[2].grid(ls='--', alpha=0.6)
+solar_cols = ['Solar_Eng_London', 'Solar_Eng_East_Norfolk', 
+              'Solar_Eng_East_Suffolk', 'Solar_Eng_East_Midlands']
 
-plt.tight_layout()
+temp_cols = ['Temp_Scot_Highlands', 'Temp_Wales_North_Gwynedd', 
+             'Temp_Eng_East_Suffolk', 'Temp_Eng_East_Norfolk']
 
-# Plot 6c: Regional variations by Year (solar, wind, temp)
-fig, axes = plt.subplots(1, 3, figsize=(18, 4))
 
-solar_by_year = df.groupby('year')[solar_cols].mean()
-for col in solar_cols:
-    axes[0].plot(solar_by_year.index, solar_by_year[col], label=col, alpha=0.7, marker='o')
-axes[0].set_xlabel('Year')
-axes[0].set_ylabel('Solar Radiation (W/m²)')
-axes[0].set_title('Solar Radiation by Year')
-axes[0].legend(fontsize=7, loc='best')
-axes[0].grid(ls='--', alpha=0.6)
+# Function to create and save monthly plots
+def create_regional_variation_plot(df, cols, variable_name, filename):
+    
+    plt.figure(figsize=(10,6))
 
-wind_by_year = df.groupby('year')[wind_cols].mean()
-for col in wind_cols:
-    axes[1].plot(wind_by_year.index, wind_by_year[col], label=col, alpha=0.7, marker='o')
-axes[1].set_xlabel('Year')
-axes[1].set_ylabel('Wind Speed (m/s)')
-axes[1].set_title('Wind Speed by Year')
-axes[1].legend(fontsize=7, loc='best')
-axes[1].grid(ls='--', alpha=0.6)
+    for col in cols:
+        monthly_avg = df.groupby('month')[col].mean()
+        plt.plot(monthly_avg.index, monthly_avg.values, label=col)
 
-temp_by_year = df.groupby('year')[temp_cols].mean()
-for col in temp_cols:
-    axes[2].plot(temp_by_year.index, temp_by_year[col], label=col, alpha=0.7, marker='o')
-axes[2].set_xlabel('Year')
-axes[2].set_ylabel('Temperature (°C)')
-axes[2].set_title('Temperature by Year')
-axes[2].legend(fontsize=7, loc='best')
-axes[2].grid(ls='--', alpha=0.6)
+    plt.title(f'{variable_name} Monthly Regional Distribution')
+    plt.xlabel('Month')
+    plt.ylabel(variable_name)
+    plt.xticks(range(1,13))
+    plt.grid(ls='--', alpha=0.6)
+    plt.legend()
+    plt.tight_layout()
 
-plt.tight_layout()
+    # Save figure
+    plt.savefig(f"Figures/{filename}", dpi=300)
 
+    plt.show()
+
+
+# Wind plot
+create_regional_variation_plot(
+    df, wind_cols,
+    "Wind Speed (m/s)",
+    "wind_region_dist.png"
+)
+
+# Solar plot
+create_regional_variation_plot(
+    df, solar_cols,
+    "Solar Radiation (W/m²)",
+    "solar_region_dist.png"
+)
+
+# Temperature plot
+create_regional_variation_plot(
+    df, temp_cols,
+    "Temperature (°C)",
+    "temp_region_dist.png"
+)
 
 # Show plots
 plt.show()
