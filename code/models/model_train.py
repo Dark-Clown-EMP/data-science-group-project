@@ -7,6 +7,9 @@ from sklearn.preprocessing import MinMaxScaler
 from LSTM import tune_lstm_model
 import pickle
 import tensorflow as tf
+import json
+from GWO_LSTM_tuner import tune_lstm_with_gwo_advanced
+from linear_regression_baseline import train_baseline_linear_model
 
 def set_global_determinism(seed=42):
     # 1. Set Python hash seed
@@ -95,7 +98,14 @@ print(f"X_test shape:  {X_test.shape}")
 print(f"y_test shape:  {y_test.shape}")
 
 
-best_hps, best_model, X_train_3d, X_test_3d, y_test_pred, y_train_pred = tune_lstm_model(X_train, y_train, X_test, y_test)
+# best_hps, best_model, X_train_3d, X_test_3d, y_test_pred, y_train_pred = tune_lstm_model(X_train, y_train, X_test, y_test)
+
+# baseline_mode, y_test_pred, y_train_pred = train_baseline_linear_model(X_train, y_train, X_test)
+
+final_model, params, y_train_pred, y_test_pred, X_train_3d, X_test_3d = tune_lstm_with_gwo_advanced(
+    X_train, y_train, X_test, y_test
+)
+
 
 def inverse_transform_target(scaled_1d_array, scaler, target_index, n_features):
     """
@@ -138,8 +148,10 @@ mape_test = mean_abs_error(y_test_unscaled, y_test_pred_unscaled)
 print("MAPE training: ", mape_train)
 print("MAPE test: ", mape_test)
 
-best_model.save('best_lstm_model.keras')
-print("Model saved successfully to 'best_lstm_model.keras'")
+# best_model.save('best_lstm_model.keras')
+# print("Model saved successfully to 'best_lstm_model.keras'")
+
+final_model.save('GWO_best_model.keras')
 
 max_lag = 365 * 24  # Your largest lag (8760 hours)
 split_idx = int(len(df_original) * 0.8) # Your train/test split point
@@ -159,7 +171,7 @@ train_results_df = pd.DataFrame({
 })
 
 # Save to CSV
-train_results_df.to_csv('lstm_training_results_with_dates.csv', index=False)
+train_results_df.to_csv('LSTM_GWO_training_results_with_dates.csv', index=False)
 print("Training results with dates successfully saved!")
 
 # --- 4. Build the Testing DataFrame ---
@@ -170,21 +182,20 @@ test_results_df = pd.DataFrame({
 })
 
 # Save to CSV
-test_results_df.to_csv('lstm_testing_results_with_dates.csv', index=False)
+test_results_df.to_csv('LSTM_GWO_testing_results_with_dates.csv', index=False)
 print("Testing results with dates successfully saved!")
 
-import json
 
-# 1. Print the hyperparameters neatly to the console
-print("--- Best Hyperparameters ---")
-best_params_dict = best_hps.values
+# # 1. Print the hyperparameters neatly to the console
+# print("--- Best Hyperparameters ---")
+# best_params_dict = best_hps.values
 
-for param_name, param_value in best_params_dict.items():
-    print(f"{param_name}: {param_value}")
-print("----------------------------")
+# for param_name, param_value in best_params_dict.items():
+#     print(f"{param_name}: {param_value}")
+# print("----------------------------")
 
-# 2. Save the hyperparameters to a JSON file for future reference
-with open('best_hyperparameters.json', 'w') as f:
-    json.dump(best_params_dict, f, indent=4)
+# # 2. Save the hyperparameters to a JSON file for future reference
+# with open('best_hyperparameters.json', 'w') as f:
+#     json.dump(best_params_dict, f, indent=4)
     
-print("Hyperparameters successfully saved to 'best_hyperparameters.json'")
+# print("Hyperparameters successfully saved to 'best_hyperparameters.json'")
