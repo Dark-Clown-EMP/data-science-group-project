@@ -1,4 +1,5 @@
 from typing import List
+from pathlib import Path
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -7,7 +8,9 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import TimeSeriesSplit, RandomizedSearchCV
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 
-DATA_PATH = "data/Processed Data/final_model_data.csv"
+BASE_DIR = Path(__file__).resolve().parents[2]
+DATA_PATH = BASE_DIR / "data/Processed Data/final_model_data.csv"
+PREDICTIONS_OUTPUT_PATH = BASE_DIR / "code/RF/outputs/tuned_rf_predictions.csv"
 TARGET = "ND"
 
 def mean_abs_error(y_true: List[float], y_pred: List[float]) -> float:
@@ -17,6 +20,22 @@ def mean_abs_error(y_true: List[float], y_pred: List[float]) -> float:
         if y_true[i] != 0:
             sum_err += abs(y_pred[i] - y_true[i]) / y_true[i]
     return sum_err / n if n > 0 else 0
+
+
+def build_predictions_frame(
+    split_name: str,
+    frame: pd.DataFrame,
+    actual_values: pd.Series,
+    predicted_values: np.ndarray,
+) -> pd.DataFrame:
+    return pd.DataFrame(
+        {
+            "dataset": split_name,
+            "datetime": frame["datetime"].values,
+            f"actual_{TARGET}": actual_values.values,
+            f"predicted_{TARGET}": predicted_values,
+        }
+    )
 
 def main():
     df = pd.read_csv(DATA_PATH)
@@ -141,6 +160,28 @@ def main():
     print(f"R2  : {train_r2:.3f}")
     print(f"MAPE: {train_mape:.2f} %")
 
+    train_predictions_df = build_predictions_frame(
+        split_name="train",
+        frame=train_df,
+        actual_values=y_train,
+        predicted_values=train_pred,
+    )
+    test_predictions_df = build_predictions_frame(
+        split_name="test",
+        frame=test_df,
+        actual_values=y_test,
+        predicted_values=pred,
+    )
+    predictions_df = pd.concat(
+        [train_predictions_df, test_predictions_df],
+        ignore_index=True,
+    )
+
+    PREDICTIONS_OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
+    test_predictions_df.to_csv(PREDICTIONS_OUTPUT_PATH.parent / "test_predictions.csv", index=False)
+    predictions_df.to_csv(PREDICTIONS_OUTPUT_PATH, index=False)
+    print(f"\nSaved predictions to: {PREDICTIONS_OUTPUT_PATH}")
+
     # Plot first 7 days of test
     n = min(len(test_df), 24 * 7)  
     plt.figure(figsize=(14, 5))
@@ -156,3 +197,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
