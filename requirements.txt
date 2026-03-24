@@ -1,0 +1,7 @@
+dotenv
+pandas
+numpy
+requests
+tensorflow
+scikit-learn
+keras_tuner
