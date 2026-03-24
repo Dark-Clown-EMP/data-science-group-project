@@ -1,0 +1,9 @@
+wind_feature,corr_with_embedded_wind,n_pairs
+Wind10m_Eng_North_Cumbria,0.8407801132211797,52608
+Wind10m_Eng_Yorkshire,0.8304562564523958,52608
+Wind10m_Wales_North_Gwynedd,0.8301182516923389,52608
+Wind10m_Scot_Borders,0.787748179149286,52608
+Wind10m_Eng_East_Norfolk,0.7453387987936566,52608
+Wind10m_Eng_East_Suffolk,0.7007195670165338,52608
+Wind10m_Scot_Aberdeenshire,0.6643971437400926,52608
+Wind10m_Scot_Highlands,0.5165946852306853,52608

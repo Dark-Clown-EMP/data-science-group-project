@@ -1,0 +1,21 @@
+DATA SOURCES + LICENSE EVIDENCE (COPY/PASTE)
+
+1) NESO Historic Demand Data (National demand + embedded wind/solar)
+- Source: https://www.neso.energy/data-portal/historic-demand-data
+- License: NESO Open Data Licence
+- License link: https://www.neso.energy/data-portal/neso-open-licence
+
+2) Sheffield Solar PV‑Live (Regional solar generation)
+- Source: https://www.solar.sheffield.ac.uk/pvlive/regional/
+- API docs: https://api.pvlive.uk/pvlive/gdocs
+- License: CC BY 4.0 (attribution required)
+
+3) Met Office DataPoint (Regional weather)
+- Source: https://www.metoffice.gov.uk/services/data/datapoint/terms-and-conditions---datapoint
+- License: Open Government Licence (OGL)
+
+4) ONS Open Geography Boundary file (for region mapping)
+- Source: https://geoportal.statistics.gov.uk/datasets/ons::counties-and-unitary-authorities-december-2024-boundaries-uk-buc-2
+- Purpose: spatially map GSP lat/long to official UK county boundaries
+
+NOTE: All sources are UK‑public, licensed, and do not require scraping.
