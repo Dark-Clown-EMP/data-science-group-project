@@ -31,6 +31,8 @@ DEMAND_COLS = [
     "NET_IMPORTS", "SCOTTISH_TRANSFER",
 ]
 
+LAG_HOURS = [24, 48, 168]
+
 
 def _add_time_features(df):
     df = df.copy()
@@ -42,13 +44,23 @@ def _add_time_features(df):
     return df
 
 
+def _add_lag_features(df, target_col="ND", lags=LAG_HOURS):
+    """Add lagged demand features (24h, 48h, 1-week)."""
+    df = df.copy()
+    for lag in lags:
+        df[f"{target_col}_lag_{lag}h"] = df[target_col].shift(lag)
+    return df
+
+
 def prepare_model_frame(df, include_weather=True, target_col="ND"):
     df = _add_time_features(df)
+    df = _add_lag_features(df, target_col=target_col)
 
     time_features = ["hour", "day_of_week", "month", "day_of_year", "is_weekend"]
+    lag_features = [f"{target_col}_lag_{lag}h" for lag in LAG_HOURS]
 
     available_demand = [c for c in DEMAND_COLS if c in df.columns]
-    feature_cols = time_features + available_demand
+    feature_cols = time_features + lag_features + available_demand
 
     if include_weather:
         available_weather = [c for c in WEATHER_COLS if c in df.columns]
