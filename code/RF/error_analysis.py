@@ -11,12 +11,10 @@ RAW_DATA_PATH = BASE_DIR / "data/Processed Data/final_model_data.csv"
 PREDICTIONS_PATH = BASE_DIR / "code/RF/outputs/test_predictions.csv"
 
 def main():
-    print("🚀 Loading data for Analysis...")
+    print(" Loading data for Analysis...")
     
-    # ---------------------------------------------------------
     # PART 1: LAG BEHAVIOR (Autocorrelation)
-    # ---------------------------------------------------------
-    print("📈 Generating Autocorrelation Plot...")
+    print(" Generating Autocorrelation Plot...")
     df_raw = pd.read_csv(RAW_DATA_PATH)
     
     plt.figure(figsize=(12, 5))
@@ -25,25 +23,22 @@ def main():
     plt.xlabel("Lag (Hours)")
     plt.ylabel("Correlation Coefficient")
 
-    # Highlight the specific lags you engineered
+    # Highlight the specific lags we engineered
     plt.axvline(x=24, color='r', linestyle='--', alpha=0.7, label='24h (Daily Routine)')
     plt.axvline(x=168, color='g', linestyle='--', alpha=0.7, label='168h (Weekly Routine)')
 
     plt.legend()
     plt.grid(True, alpha=0.3)
     plt.tight_layout()
-    plt.show() # Close this window to move to the next plots
+    plt.show() 
 
-    # ---------------------------------------------------------
     # PART 2: VISUAL ERROR ANALYSIS
-    # ---------------------------------------------------------
-    print("🔍 Generating Visual Error Analysis...")
+    print(" Generating Visual Error Analysis...")
     
-    # Load the predictions saved by your tuning script
     try:
         results_df = pd.read_csv(PREDICTIONS_PATH)
     except FileNotFoundError:
-        print(f"❌ Could not find {PREDICTIONS_PATH}. Make sure your tuning script ran completely!")
+        print(f" Could not find {PREDICTIONS_PATH}.")
         return
 
     # Convert datetime back to timestamp objects
@@ -75,13 +70,11 @@ def main():
     plt.tight_layout()
     plt.show()
 
-    # ---------------------------------------------------------
     # PART 3: FIND THE WORST PREDICTION
-    # ---------------------------------------------------------
     worst_idx = results_df['Absolute_Error'].idxmax()
     worst_day = results_df.loc[worst_idx]
     
-    print(f"\n🚨 WORST SINGLE PREDICTION OF 2025:")
+    print(f"\n WORST SINGLE PREDICTION OF 2025:")
     print(f"Time: {worst_day['datetime']}")
     print(f"Actual: {round(worst_day['actual_ND'], 1)} MW")
     print(f"Predicted: {round(worst_day['predicted_ND'], 1)} MW")
