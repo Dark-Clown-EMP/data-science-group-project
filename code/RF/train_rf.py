@@ -9,10 +9,10 @@ from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 DATA_PATH = "data/Processed Data/final_model_data.csv"
 TARGET = "ND"
 
-# Define your custom MAPE function OUTSIDE of main()
+
 def mean_abs_error(y_true : List[float], y_pred: List[float]) -> float:
     n = len(y_true)
-    sum_err = 0  # renamed from 'sum' to avoid overriding Python's built-in sum()
+    sum_err = 0  
     for i in range(n):
         if y_true[i] != 0:
             sum_err += abs(y_pred[i] - y_true[i]) / y_true[i]
@@ -78,7 +78,7 @@ def main():
     rf.fit(X_train, y_train)
     pred = rf.predict(X_test)
 
-    # 6) Metrics (Now properly indented inside main!)
+    # 6) Metrics 
     rmse = np.sqrt(mean_squared_error(y_test, pred))
     mae  = mean_absolute_error(y_test, pred)
     r2   = r2_score(y_test, pred)
