@@ -8,7 +8,7 @@ DATA_PATH = "data/Processed Data/final_model_data.csv"
 TARGET = "ND"
 
 def main():
-    print("🚀 Loading data...")
+    print(" Loading data...")
     df = pd.read_csv(DATA_PATH)
     df["datetime"] = pd.to_datetime(df["datetime"])
     df = df.sort_values("datetime").reset_index(drop=True)
@@ -22,7 +22,7 @@ def main():
     df["ND_lag_168"] = df[TARGET].shift(168) # 1 Week
     df["ND_lag_336"] = df[TARGET].shift(336) # 2 Weeks
 
-    # Long-Term Lags (Perfectly aligned by exactly 4 weeks and 52 weeks)
+    # Long-Term Lags 
     df["ND_lag_672"] = df[TARGET].shift(672)   # Exactly 4 weeks
     df["ND_lag_8736"] = df[TARGET].shift(8736) # Exactly 52 weeks
 
@@ -48,7 +48,7 @@ def main():
     y_train = train_df[TARGET]
     X_test = test_df[feature_cols]
 
-    print(f"🌲 Training Random Forest...")
+    print(f" Training Random Forest...")
     rf = RandomForestRegressor(
         n_estimators=800,
         min_samples_split=10, 
@@ -61,38 +61,29 @@ def main():
     )
     rf.fit(X_train, y_train)
 
-    # ==========================================
-    # 🚨 SHAP ANALYSIS SECTION 🚨
-    # ==========================================
-    # PRO TIP: SHAP takes a very long time to run on 40,000 rows.
-    # To get your plots quickly for the presentation, we randomly sample 500 rows.
+    #  SHAP ANALYSIS SECTION 🚨
+    #  SHAP takes a very long time to run on 40,000 rows.
+    # To get plots quickly for the presentation, we randomly sample 500 rows.
     # The statistical insights will be exactly the same.
-    print("🧠 Calculating SHAP values... (This takes about 30-60 seconds)")
+    print(" Calculating SHAP values... ")
     X_test_sampled = X_test.sample(n=500, random_state=42)
     
     # Create the explainer
     explainer = shap.TreeExplainer(rf)
     shap_values = explainer(X_test_sampled)
 
-    # ---------------------------------------------------------
     # 1. GLOBAL INTERPRETABILITY: SHAP Summary Plot
-    # ---------------------------------------------------------
-    print("📊 Generating Global SHAP Summary Plot...")
+    print(" Generating Global SHAP Summary Plot...")
     plt.figure(figsize=(10, 6))
     plt.title("Global Interpretability: How Features Drive Grid Demand")
-    # This plot will open automatically
     shap.summary_plot(shap_values, X_test_sampled, show=False)
     plt.tight_layout()
     plt.show()
 
-    # ---------------------------------------------------------
     # 2. LOCAL INTERPRETABILITY: SHAP Waterfall Plot
-    # ---------------------------------------------------------
-    print("🔬 Generating Local SHAP Waterfall Plot (Explaining a single prediction)...")
-    # We will explain the very first prediction in our sampled dataset
+    print(" Generating Local SHAP Waterfall Plot...")
     plt.figure(figsize=(10, 6))
     plt.title("Local Interpretability: Explaining a Single Prediction")
-    # This plot will open automatically after you close the first one
     shap.plots.waterfall(shap_values[0], show=False)
     plt.tight_layout()
     plt.show()
