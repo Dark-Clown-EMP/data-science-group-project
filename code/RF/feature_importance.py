@@ -3,14 +3,12 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.ensemble import RandomForestRegressor
 
-# ==========================================
 # 1. SETUP AND DATA LOADING
-# ==========================================
 DATA_PATH = "data/Processed Data/final_model_data.csv"
 TARGET = "ND"
 
 def main():
-    print("🚀 Loading data and engineering features...")
+    print(" Loading data and engineering features...")
     df = pd.read_csv(DATA_PATH)
     df["datetime"] = pd.to_datetime(df["datetime"])
     df = df.sort_values("datetime").reset_index(drop=True)
@@ -43,9 +41,7 @@ def main():
     # Drop missing rows
     df_model = df.dropna(subset=[TARGET] + lag_cols).copy()
 
-    # ==========================================
     # 2. TRAIN THE MODEL (Using Training Data Only)
-    # ==========================================
     # We only need to train the model to get feature importances. 
     # We use the training set (pre-2025) to prevent any data leakage.
     train_df = df_model[df_model["datetime"] < "2025-01-01"].copy()
@@ -53,9 +49,9 @@ def main():
     X_train = train_df[feature_cols]
     y_train = train_df[TARGET]
 
-    print(f"🌲 Training Random Forest on {len(X_train)} rows to calculate importance...")
+    print(f" Training Random Forest on {len(X_train)} rows to calculate importance...")
     
-    # Using your tuned parameters
+    # Using the tuned parameters
     rf = RandomForestRegressor(
         n_estimators=800,
         min_samples_split=10, 
@@ -69,10 +65,8 @@ def main():
 
     rf.fit(X_train, y_train)
 
-    # ==========================================
     # 3. EXTRACT AND PLOT FEATURE IMPORTANCES
-    # ==========================================
-    print("📊 Generating Feature Importance Plot...")
+    print(" Generating Feature Importance Plot...")
     
     importances = rf.feature_importances_
     indices = np.argsort(importances)[::-1] # Sort from highest to lowest
@@ -105,7 +99,6 @@ def main():
     plt.ylabel("Relative Importance Score (Gini)", fontsize=12)
     plt.grid(axis='y', linestyle='--', alpha=0.7)
     
-    # Optional: Add the exact numbers on top of the bars for clarity
     for bar in bars:
         yval = bar.get_height()
         plt.text(bar.get_x() + bar.get_width()/2.0, yval, f'{yval:.3f}', va='bottom', ha='center', fontsize=9)
