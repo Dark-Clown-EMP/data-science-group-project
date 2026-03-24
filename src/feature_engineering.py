@@ -1,7 +1,5 @@
-"""Feature engineering utilities for energy demand forecasting."""
-
+import numpy as np
 import pandas as pd
-
 
 WEATHER_COLS = [
     "Temp_Scot_Highlands", "Wind10m_Scot_Highlands",
@@ -23,15 +21,8 @@ WEATHER_COLS = [
     "Temp_Eng_South_Bristol", "Solar_Eng_South_Bristol",
 ]
 
-DEMAND_COLS = [
-    "TSD", "ENGLAND_WALES_DEMAND",
-    "EMBEDDED_WIND_GENERATION", "EMBEDDED_WIND_CAPACITY",
-    "EMBEDDED_SOLAR_GENERATION", "EMBEDDED_SOLAR_CAPACITY",
-    "NON_BM_STOR", "PUMP_STORAGE_PUMPING",
-    "NET_IMPORTS", "SCOTTISH_TRANSFER",
-]
-
-LAG_HOURS = [24, 48, 168]
+LAG_HOURS = [24, 48, 72, 168]
+ROLLING_WINDOWS = [24, 48, 168]
 
 
 def _add_time_features(df):
@@ -41,30 +32,55 @@ def _add_time_features(df):
     df["month"] = df["datetime"].dt.month
     df["day_of_year"] = df["datetime"].dt.dayofyear
     df["is_weekend"] = (df["day_of_week"] >= 5).astype(int)
+    df["hour_sin"] = np.sin(2 * np.pi * df["hour"] / 24)
+    df["hour_cos"] = np.cos(2 * np.pi * df["hour"] / 24)
+    df["month_sin"] = np.sin(2 * np.pi * df["month"] / 12)
+    df["month_cos"] = np.cos(2 * np.pi * df["month"] / 12)
     return df
 
 
 def _add_lag_features(df, target_col="ND", lags=LAG_HOURS):
-    """Add lagged demand features (24h, 48h, 1-week)."""
     df = df.copy()
     for lag in lags:
         df[f"{target_col}_lag_{lag}h"] = df[target_col].shift(lag)
     return df
 
 
+def _add_rolling_features(df, target_col="ND", windows=ROLLING_WINDOWS):
+    df = df.copy()
+    for w in windows:
+        df[f"{target_col}_rmean_{w}h"] = df[target_col].shift(24).rolling(w).mean()
+        df[f"{target_col}_rstd_{w}h"] = df[target_col].shift(24).rolling(w).std()
+    return df
+
+
 def prepare_model_frame(df, include_weather=True, target_col="ND"):
     df = _add_time_features(df)
     df = _add_lag_features(df, target_col=target_col)
+    df = _add_rolling_features(df, target_col=target_col)
 
-    time_features = ["hour", "day_of_week", "month", "day_of_year", "is_weekend"]
+    time_features = [
+        "hour", "day_of_week", "month", "day_of_year", "is_weekend",
+        "hour_sin", "hour_cos", "month_sin", "month_cos",
+    ]
     lag_features = [f"{target_col}_lag_{lag}h" for lag in LAG_HOURS]
+    rolling_features = [
+        f"{target_col}_{stat}_{w}h"
+        for w in ROLLING_WINDOWS for stat in ["rmean", "rstd"]
+    ]
 
-    available_demand = [c for c in DEMAND_COLS if c in df.columns]
-    feature_cols = time_features + lag_features + available_demand
+    feature_cols = time_features + lag_features + rolling_features
 
     if include_weather:
-        available_weather = [c for c in WEATHER_COLS if c in df.columns]
-        feature_cols += available_weather
+        weather_lag = 24
+        lagged_weather_cols = {}
+        for col in WEATHER_COLS:
+            if col in df.columns:
+                lagged_weather_cols[f"{col}_lag_{weather_lag}h"] = df[col].shift(weather_lag)
+        if lagged_weather_cols:
+            df = pd.concat([df, pd.DataFrame(lagged_weather_cols)], axis=1)
+        lagged_weather = list(lagged_weather_cols.keys())
+        feature_cols += lagged_weather
 
     keep_cols = ["datetime", target_col] + feature_cols
     df_model = df[keep_cols].dropna().reset_index(drop=True)
