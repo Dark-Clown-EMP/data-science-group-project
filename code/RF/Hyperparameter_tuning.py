@@ -42,9 +42,7 @@ def main():
     df["datetime"] = pd.to_datetime(df["datetime"])
     df = df.sort_values("datetime").reset_index(drop=True)
 
-    # ---------------------------------------------------------
     # CALENDAR-ALIGNED LAGS
-    # ---------------------------------------------------------
     # Short-Term Lags (Days)
     df["ND_lag_24"] = df[TARGET].shift(24)   # 1 Day
     df["ND_lag_48"] = df[TARGET].shift(48)   # 2 Days
@@ -73,7 +71,7 @@ def main():
 
     df_model = df.dropna(subset=[TARGET] + lag_cols).copy()
 
-    # Time-based split (good practice, not leakage)
+    # Time-based split 
     train_df = df_model[df_model["datetime"] < "2025-01-01"].copy()
     test_df  = df_model[df_model["datetime"] >= "2025-01-01"].copy()
 
@@ -85,9 +83,7 @@ def main():
     print("Train rows:", len(train_df), "| Test rows:", len(test_df))
     print("Num features:", len(feature_cols))
 
-    # ---------------------------
     # 1) Hyperparameter search
-    # ---------------------------
     tscv = TimeSeriesSplit(n_splits=3)
 
     param_dist = {
@@ -98,8 +94,6 @@ def main():
         "max_features": ["sqrt", 0.3, 0.5, 0.8],
         "bootstrap": [True]
     }
-
-    # Set n_jobs=1 here so it doesn't fight your CPU during the CV search
     base_rf = RandomForestRegressor(
         random_state=42,
         n_jobs=1
@@ -123,12 +117,9 @@ def main():
     print(search.best_params_)
     print("Best CV MAE:", round(-search.best_score_, 2))
 
-    # Grab the winning model!
     best_rf = search.best_estimator_
 
-    # ---------------------------
     # 2) Final test evaluation
-    # ---------------------------
     pred = best_rf.predict(X_test)
 
     rmse = np.sqrt(mean_squared_error(y_test, pred))
@@ -142,10 +133,7 @@ def main():
     print("R2  :", round(r2, 3))
     print("MAPE:", round(mape, 2), "%")
 
-    # ---------------------------
     # 3) Predict on the Training Data
-    # ---------------------------
-    # FIXED: Using best_rf instead of rf
     train_pred = best_rf.predict(X_train)
 
     # Calculate Train Metrics
@@ -197,5 +185,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
