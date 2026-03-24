@@ -8,7 +8,7 @@ DATA_PATH = "data/Processed Data/final_model_data.csv"
 TARGET = "ND"
 
 def main():
-    print("🚀 Loading data for Feature Ablation Study...")
+    print(" Loading data for Feature Ablation Study...")
     df = pd.read_csv(DATA_PATH)
     df["datetime"] = pd.to_datetime(df["datetime"])
     df = df.sort_values("datetime").reset_index(drop=True)
@@ -22,7 +22,7 @@ def main():
     df["ND_lag_168"] = df[TARGET].shift(168) # 1 Week
     df["ND_lag_336"] = df[TARGET].shift(336) # 2 Weeks
 
-    # Long-Term Lags (Perfectly aligned by exactly 4 weeks and 52 weeks)
+    # Long-Term Lags 
     df["ND_lag_672"] = df[TARGET].shift(672)   # Exactly 4 weeks
     df["ND_lag_8736"] = df[TARGET].shift(8736) # Exactly 52 weeks
 
@@ -53,7 +53,7 @@ def main():
     y_train = train_df[TARGET]
     y_test = test_df[TARGET]
 
-    print(f"🌲 Initializing Random Forest...")
+    print(f" Initializing Random Forest...")
     rf = RandomForestRegressor(
         n_estimators=800,
         min_samples_split=10, 
@@ -65,31 +65,25 @@ def main():
         random_state=42
     )
 
-    # ==========================================
-    # 🏃 RUN 1: THE FULL MODEL
-    # ==========================================
-    print(f"\n✅ Training FULL Model (Lags + {len(weather_cols)} Weather Features)...")
+    #  RUN 1: THE FULL MODEL
+    print(f"\n Training FULL Model (Lags + {len(weather_cols)} Weather Features)...")
     rf.fit(train_df[full_features], y_train)
     pred_full = rf.predict(test_df[full_features])
     mae_full = mean_absolute_error(y_test, pred_full)
     print(f"Full Model MAE: {mae_full:.2f} MW")
 
-    # ==========================================
-    # ✂️ RUN 2: THE ABLATED MODEL
-    # ==========================================
-    print(f"\n❌ Training ABLATED Model (Lags ONLY, Zero Weather Data)...")
+    #  RUN 2: THE ABLATED MODEL
+    print(f"\n Training ABLATED Model (Lags ONLY, Zero Weather Data)...")
     rf.fit(train_df[ablated_features], y_train)
     pred_ablated = rf.predict(test_df[ablated_features])
     mae_ablated = mean_absolute_error(y_test, pred_ablated)
     print(f"Ablated Model MAE: {mae_ablated:.2f} MW")
 
-    # ==========================================
-    # 📊 CALCULATE VALUE AND PLOT
-    # ==========================================
+    # CALCULATE VALUE AND PLOT
     diff = mae_ablated - mae_full
     
     print("\n" + "="*50)
-    print(f"📉 THE VALUE OF WEATHER: Weather data prevents {diff:.2f} MW of error!")
+    print(f"THE VALUE OF WEATHER: Weather data prevents {diff:.2f} MW of error!")
     print("="*50)
 
     # Create a professional bar chart
