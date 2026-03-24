@@ -9,16 +9,16 @@ from tensorflow.keras.layers import LSTM, Dense, Dropout #type:ignore
 def build_advanced_lstm(input_shape, units, dropout, lr, num_layers, activation_idx):
     """Builds a stacked LSTM based on GWO discovered parameters."""
     activations = ['relu', 'tanh', 'sigmoid']
-    selected_act = activations[int(activation_idx)] 
+    selected_act = activations[int(activation_idx)]
     
     model = Sequential()
     for i in range(int(num_layers)):
         is_last_layer = (i == int(num_layers) - 1)
         if i == 0:
-            model.add(LSTM(units=int(units), activation=selected_act, 
+            model.add(LSTM(units=int(units), activation=selected_act,
                            return_sequences=not is_last_layer, input_shape=input_shape))
         else:
-            model.add(LSTM(units=int(units), activation=selected_act, 
+            model.add(LSTM(units=int(units), activation=selected_act,
                            return_sequences=not is_last_layer))
         model.add(Dropout(dropout))
     

@@ -1,9 +1,9 @@
 import math
 
 import numpy as np
-from tensorflow import keras
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import LSTM, Dense, Dropout
+from tensorflow import keras #type:ignore
+from tensorflow.keras.models import Sequential #type:ignore
+from tensorflow.keras.layers import LSTM, Dense, Dropout #type:ignore
 import keras_tuner as kt
 from sklearn.metrics import mean_squared_error
 
