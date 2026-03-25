@@ -88,15 +88,15 @@ def main():
 
     param_dist = {
         "n_estimators": [300, 500, 800, 1200],
-        "max_depth": [10, 15, 20, 25, None],
+        "max_depth": [3, 5, 10, 15, 20],
         "min_samples_split": [2, 5, 10, 20],
         "min_samples_leaf": [1, 2, 5, 10],
-        "max_features": ["sqrt", 0.3, 0.5, 0.8],
+        "max_features": ["sqrt","log2", 0.3, 0.5],
         "bootstrap": [True]
     }
     base_rf = RandomForestRegressor(
         random_state=42,
-        n_jobs=1
+        n_jobs=-1
     )
 
     search = RandomizedSearchCV(
@@ -106,7 +106,7 @@ def main():
         scoring="neg_mean_absolute_error",
         cv=tscv,
         verbose=1,
-        n_jobs=-1,
+        n_jobs=1,
         random_state=42
     )
 
