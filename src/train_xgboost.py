@@ -9,18 +9,25 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
-from sklearn.model_selection import TimeSeriesSplit, ParameterSampler
+import optuna
+from sklearn.model_selection import TimeSeriesSplit
 from sklearn.metrics import mean_absolute_error
 from xgboost import XGBRegressor
 
 from evaluation import evaluate_regression
 from feature_engineering import prepare_model_frame
 
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
-DATA_PATH = "data/processed/final_model_data.csv"
+DATA_PATH = PROJECT_ROOT / "data" / "processed" / "final_model_data.csv"
 TARGET = "ND"
 TRAIN_CUTOFF = "2025-01-01"
 
+N_TRIALS = 500
+N_SPLITS = 5
+EARLY_STOPPING_ROUNDS = 50
+MAX_BOOSTING_ROUNDS = 5000
+VAL_FRACTION = 0.10
 
 
 def load_data(path=DATA_PATH):
@@ -46,30 +53,17 @@ def prepare_xgboost_data(df, target_col=TARGET):
     return X_train, X_test, y_train, y_test, train_df, test_df, feature_cols
 
 
-
-def build_base_xgb():
+def _build_model(**extra_params):
     return XGBRegressor(
         objective="reg:squarederror",
         tree_method="hist",
+        device="cuda",
+        n_estimators=MAX_BOOSTING_ROUNDS,
+        early_stopping_rounds=EARLY_STOPPING_ROUNDS,
         random_state=42,
-        n_jobs=-1,
+        verbosity=0,
+        **extra_params,
     )
-
-
-PARAM_DIST = {
-    "n_estimators": [500, 700, 1000, 1500, 2000],
-    "max_depth": [4, 5, 6, 7, 8, 10, 12],
-    "learning_rate": [0.01, 0.02, 0.03, 0.05, 0.08, 0.1],
-    "subsample": [0.7, 0.8, 0.85, 0.9, 1.0],
-    "colsample_bytree": [0.5, 0.6, 0.7, 0.8, 0.9],
-    "min_child_weight": [1, 3, 5, 7, 10],
-    "gamma": [0, 0.05, 0.1, 0.3, 0.5],
-    "reg_alpha": [0, 0.01, 0.05, 0.1, 1],
-    "reg_lambda": [0.5, 1, 2, 3, 5],
-}
-
-N_ITER = 25
-N_SPLITS = 5
 
 
 def _format_time(seconds):
@@ -85,89 +79,97 @@ def tune_xgboost(X_train, y_train):
     tscv = TimeSeriesSplit(n_splits=N_SPLITS)
     folds = list(tscv.split(X_train))
 
-    rng = np.random.RandomState(42)
-    candidates = list(ParameterSampler(PARAM_DIST, n_iter=N_ITER, random_state=rng))
-
     print("=" * 70)
-    print(f"\u23f3  HYPERPARAMETER TUNING — {N_ITER} candidates x {N_SPLITS} folds")
+    print(f"   HYPERPARAMETER TUNING - Optuna {N_TRIALS} trials x {N_SPLITS} folds")
     print(f"   Training samples: {len(X_train)}")
+    print(f"   Early stopping patience: {EARLY_STOPPING_ROUNDS}")
+    print(f"   Max boosting rounds per trial: {MAX_BOOSTING_ROUNDS}")
     print("=" * 70)
     print()
 
-    best_score = -np.inf
-    best_params = None
-    best_estimator = None
-    all_results = []
     overall_start = time.time()
 
-    for i, params in enumerate(candidates, 1):
-        cand_start = time.time()
-        fold_scores = []
+    def objective(trial):
+        params = {
+            "max_depth": trial.suggest_int("max_depth", 4, 12),
+            "learning_rate": trial.suggest_float("learning_rate", 0.01, 0.1, log=True),
+            "subsample": trial.suggest_float("subsample", 0.7, 1.0),
+            "colsample_bytree": trial.suggest_float("colsample_bytree", 0.5, 0.9),
+            "min_child_weight": trial.suggest_int("min_child_weight", 1, 10),
+            "gamma": trial.suggest_float("gamma", 0.0, 0.5),
+            "reg_alpha": trial.suggest_float("reg_alpha", 1e-3, 1.0, log=True),
+            "reg_lambda": trial.suggest_float("reg_lambda", 0.5, 5.0),
+        }
 
-        for fold_idx, (tr_idx, val_idx) in enumerate(folds, 1):
+        fold_maes = []
+        for tr_idx, val_idx in folds:
             X_tr, X_val = X_train.iloc[tr_idx], X_train.iloc[val_idx]
             y_tr, y_val = y_train.iloc[tr_idx], y_train.iloc[val_idx]
 
-            mdl = build_base_xgb()
-            mdl.set_params(**params)
+            mdl = _build_model(**params)
             mdl.fit(X_tr, y_tr, eval_set=[(X_val, y_val)], verbose=False)
             y_val_pred = mdl.predict(X_val)
-            fold_mae = mean_absolute_error(y_val, y_val_pred)
-            fold_scores.append(-fold_mae)
+            fold_maes.append(mean_absolute_error(y_val, y_val_pred))
 
-            sys.stdout.write(
-                f"\r   Candidate {i:>2}/{N_ITER}  |  "
-                f"Fold {fold_idx}/{N_SPLITS}  |  "
-                f"Fold MAE: {fold_mae:>10.2f}"
-            )
-            sys.stdout.flush()
+        return np.mean(fold_maes)
 
-        mean_score = np.mean(fold_scores)
-        cand_time = time.time() - cand_start
+    def trial_callback(study, trial):
         elapsed = time.time() - overall_start
-        eta = (elapsed / i) * (N_ITER - i)
-
-        marker = ""
-        if mean_score > best_score:
-            best_score = mean_score
-            best_params = params
-            best_estimator = mdl
-            marker = "  \u2b50 NEW BEST"
-
+        eta = (elapsed / (trial.number + 1)) * (N_TRIALS - trial.number - 1)
+        best = study.best_trial
+        marker = "  * NEW BEST" if trial.number == best.number else ""
         sys.stdout.write(
-            f"\r   Candidate {i:>2}/{N_ITER}  |  "
-            f"Mean MAE: {-mean_score:>10.2f}  |  "
-            f"Time: {_format_time(cand_time)}  |  "
+            f"   Trial {trial.number + 1:>3}/{N_TRIALS}  |  "
+            f"MAE: {trial.value:>10.2f}  |  "
+            f"Best: {best.value:>10.2f}  |  "
             f"ETA: {_format_time(eta)}{marker}\n"
         )
         sys.stdout.flush()
 
-        all_results.append({
-            "candidate": i,
-            "params": params,
-            "mean_mae": -mean_score,
-            "time": cand_time,
-        })
+    optuna.logging.set_verbosity(optuna.logging.WARNING)
+    storage = f"sqlite:///{PROJECT_ROOT / 'optuna_xgb.db'}"
+    study_name = "xgb_day_ahead_tuning"
+    study = optuna.create_study(
+        study_name=study_name,
+        storage=storage,
+        direction="minimize",
+        sampler=optuna.samplers.TPESampler(seed=42),
+        load_if_exists=True,
+    )
+
+    completed = len([t for t in study.trials if t.state == optuna.trial.TrialState.COMPLETE])
+    if completed > 0:
+        print(f"   Resuming study '{study_name}' with {completed} completed trials")
+        print(f"   Current best MAE: {study.best_value:.2f}")
+    else:
+        print(f"   Created new study '{study_name}'")
+    print()
+
+    remaining = max(0, N_TRIALS - completed)
+    if remaining == 0:
+        print("   All trials already completed, skipping optimization")
+    else:
+        study.optimize(objective, n_trials=remaining, callbacks=[trial_callback])
 
     total_time = time.time() - overall_start
+    best_params = study.best_trial.params
+    total_completed = len([t for t in study.trials if t.state == optuna.trial.TrialState.COMPLETE])
+
     print()
     print("=" * 70)
-    print(f"\U0001f3c6  TUNING COMPLETE in {_format_time(total_time)}")
-    print(f"   Best CV MAE: {-best_score:.2f}")
+    print(f"   TUNING COMPLETE in {_format_time(total_time)}")
+    print(f"   Total completed trials: {total_completed}")
+    print(f"   Best CV MAE: {study.best_value:.2f}")
+    print(f"   Best Trial: {study.best_trial.number + 1}")
     print(f"   Best Parameters:")
     for k, v in sorted(best_params.items()):
-        print(f"     {k}: {v}")
+        if isinstance(v, float):
+            print(f"     {k}: {v:.6f}")
+        else:
+            print(f"     {k}: {v}")
     print("=" * 70)
 
-    class TuneResult:
-        pass
-    result = TuneResult()
-    result.best_estimator_ = build_base_xgb()
-    result.best_estimator_.set_params(**best_params)
-    result.best_params_ = best_params
-    result.best_score_ = best_score
-    result.cv_results_ = all_results
-    return result
+    return best_params, study
 
 
 
@@ -244,45 +246,55 @@ def run_xgboost(path=DATA_PATH, tuned=True):
     print()
 
     if tuned:
-        search = tune_xgboost(X_train, y_train)
-        model = search.best_estimator_
-        best_params = search.best_params_
+        best_params, study = tune_xgboost(X_train, y_train)
     else:
-        search = None
-        model = build_base_xgb()
-        best_params = None
+        best_params = {}
+        study = None
 
     print()
     print("=" * 70)
-    print("\U0001f680  FINAL MODEL TRAINING")
-    n_est = model.get_params().get("n_estimators", 100)
-    print(f"   Boosting rounds: {n_est}")
+    print("   FINAL MODEL TRAINING (with early stopping)")
+
+    split_idx = int(len(X_train) * (1 - VAL_FRACTION))
+    X_fit = X_train.iloc[:split_idx]
+    y_fit = y_train.iloc[:split_idx]
+    X_es_val = X_train.iloc[split_idx:]
+    y_es_val = y_train.iloc[split_idx:]
+
+    print(f"   Fit samples: {len(X_fit)} | ES validation samples: {len(X_es_val)}")
+    print(f"   Max boosting rounds: {MAX_BOOSTING_ROUNDS}")
+    print(f"   Early stopping patience: {EARLY_STOPPING_ROUNDS}")
     print("-" * 70)
+
+    model = _build_model(**best_params)
 
     train_start = time.time()
     model.fit(
-        X_train, y_train,
-        eval_set=[(X_train, y_train), (X_test, y_test)],
+        X_fit, y_fit,
+        eval_set=[(X_fit, y_fit), (X_es_val, y_es_val)],
         verbose=False,
     )
     train_time = time.time() - train_start
 
+    best_iteration = model.best_iteration
+    print(f"   Early stopping at iteration: {best_iteration + 1}")
+
     evals = model.evals_result()
     train_rmse_list = evals["validation_0"]["rmse"]
-    test_rmse_list = evals["validation_1"]["rmse"]
+    val_rmse_list = evals["validation_1"]["rmse"]
     total_rounds = len(train_rmse_list)
     step = max(1, total_rounds // 10)
     for epoch in range(0, total_rounds, step):
         sys.stdout.write(
             f"   [Epoch {epoch + 1:>5}/{total_rounds}]  "
             f"Train RMSE: {train_rmse_list[epoch]:>10.2f}  |  "
-            f"Test RMSE: {test_rmse_list[epoch]:>10.2f}\n"
+            f"Val RMSE: {val_rmse_list[epoch]:>10.2f}\n"
         )
     if (total_rounds - 1) % step != 0:
         sys.stdout.write(
             f"   [Epoch {total_rounds:>5}/{total_rounds}]  "
             f"Train RMSE: {train_rmse_list[-1]:>10.2f}  |  "
-            f"Test RMSE: {test_rmse_list[-1]:>10.2f}\n"
+            f"Val RMSE: {val_rmse_list[-1]:>10.2f}\n"
         )
     print(f"\n   Training completed in {_format_time(train_time)}")
     print("=" * 70)
@@ -293,14 +305,14 @@ def run_xgboost(path=DATA_PATH, tuned=True):
     test_metrics = evaluate_regression(y_test.values, y_pred_test)
 
     print()
-    print("\u2705 DAY-AHEAD XGBOOST RESULTS (Test 2025):")
+    print("DAY-AHEAD XGBOOST RESULTS (Test 2025):")
     print(f"RMSE: {test_metrics['RMSE']:.2f}")
     print(f"MAE : {test_metrics['MAE']:.2f}")
     print(f"R2  : {test_metrics['R2']:.3f}")
     print(f"MAPE: {test_metrics['MAPE']:.2f} %")
 
     print()
-    print("\U0001f4ca TRAINING DATA RESULTS:")
+    print("TRAINING DATA RESULTS:")
     print(f"RMSE: {train_metrics['RMSE']:.2f}")
     print(f"MAE : {train_metrics['MAE']:.2f}")
     print(f"R2  : {train_metrics['R2']:.3f}")
@@ -326,8 +338,9 @@ def run_xgboost(path=DATA_PATH, tuned=True):
 
     return {
         "model": model,
-        "search": search,
+        "study": study,
         "best_params": best_params,
+        "best_iteration": best_iteration,
         "feature_cols": feature_cols,
         "train_metrics": train_metrics,
         "test_metrics": test_metrics,
@@ -341,9 +354,9 @@ def run_xgboost(path=DATA_PATH, tuned=True):
 
 
 
-def save_outputs(results, data_dir="data/processed", fig_dir="figures"):
-    data_dir = Path(data_dir)
-    fig_dir = Path(fig_dir)
+def save_outputs(results, data_dir=None, fig_dir=None):
+    data_dir = Path(data_dir) if data_dir else PROJECT_ROOT / "data" / "processed"
+    fig_dir = Path(fig_dir) if fig_dir else PROJECT_ROOT / "figures"
     data_dir.mkdir(parents=True, exist_ok=True)
     fig_dir.mkdir(parents=True, exist_ok=True)
 
@@ -378,6 +391,7 @@ def save_results_png(results, save_path):
     test_m = results["test_metrics"]
     train_m = results["train_metrics"]
     bp = results.get("best_params") or {}
+    best_iter = results.get("best_iteration", "N/A")
 
     lines = [
         "XGBoost Day-Ahead Forecasting Results",
@@ -394,6 +408,8 @@ def save_results_png(results, save_path):
         f"  MAE  : {train_m['MAE']:.2f}",
         f"  R\u00b2   : {train_m['R2']:.4f}",
         f"  MAPE : {train_m['MAPE']:.2f}%",
+        "",
+        f"Early stopping iteration: {best_iter}",
         "",
         "BEST HYPERPARAMETERS:",
     ]
@@ -429,7 +445,7 @@ if __name__ == "__main__":
     results = run_xgboost(tuned=True)
     save_outputs(results)
 
-    fig_dir = Path("figures")
+    fig_dir = PROJECT_ROOT / "figures"
     fig_dir.mkdir(exist_ok=True)
     save_results_png(results, fig_dir / "xgb_results_summary.png")
 
