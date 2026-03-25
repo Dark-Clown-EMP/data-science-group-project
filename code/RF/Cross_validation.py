@@ -3,20 +3,16 @@ import numpy as np
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 
-# -------------------------
 # 1. Load Data
-# -------------------------
 DATA_PATH = "data/Processed Data/final_model_data.csv"
 TARGET = "ND"
 
-print("🚀 Loading data for Time Series CV...")
+print(" Loading data for Time Series CV...")
 df = pd.read_csv(DATA_PATH)
 df["datetime"] = pd.to_datetime(df["datetime"])
 df = df.sort_values("datetime").reset_index(drop=True)
 
-# -------------------------
 # 2. Generate Calendar-Aligned Lags
-# -------------------------
 # Short-Term Lags (Days)
 df["ND_lag_24"] = df[TARGET].shift(24)   
 df["ND_lag_48"] = df[TARGET].shift(48)   
@@ -46,24 +42,19 @@ feature_cols = [c for c in feature_cols if c in df.columns]
 # Drop rows with missing values caused by the 1-year shift
 df_model = df.dropna(subset=[TARGET] + lag_cols).copy()
 
-# -------------------------
-# 3. Initialize Tuned Model
-# -------------------------
 rf = RandomForestRegressor(
-    n_estimators=800,
-    min_samples_split=10, 
-    max_features=0.3,
-    max_depth=None, 
-    min_samples_leaf=1, 
-    bootstrap=True,
-    random_state=42,
-    n_jobs=-1
-)
+        n_estimators=1200,
+        min_samples_split=2, 
+        max_features=0.3,
+        max_depth=15, 
+        min_samples_leaf=1, 
+        bootstrap=True,
+        n_jobs=-1, 
+        random_state=42
+    )
 
-# -------------------------
 # 4. Expanding Window Cross Validation
-# -------------------------
-print("\n⏳ Running Expanding Window Cross Validation...")
+print("\n Running Expanding Window Cross Validation...")
 results = []
 
 # Test years: evaluating on 2022, 2023, 2024, and 2025
@@ -102,12 +93,11 @@ for test_year in [2022, 2023, 2024, 2025]:
 
     results.append([test_year, len(train), len(test), mae, rmse, r2, mape])
 
-# -------------------------
 # 5. Print Results
-# -------------------------
+# 
 res_df = pd.DataFrame(results, columns=["Test Year", "Train Rows", "Test Rows", "MAE", "RMSE", "R2", "MAPE (%)"])
-print("\n✅ Expanding-Window CV Results:")
+print("\n Expanding-Window CV Results:")
 print(res_df.to_string(index=False))
 
-print("\n📊 Average Overall Performance:")
+print("\n Average Overall Performance:")
 print(res_df[["MAE", "RMSE", "R2", "MAPE (%)"]].mean().round(3).to_string())
