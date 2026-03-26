@@ -3,6 +3,9 @@ __pycache__/
 *.py[codz]
 *$py.class
 
+# Optuna / SQLite runtime databases
+*.db
+
 # C extensions
 *.so
 
@@ -207,5 +210,4 @@ marimo/_lsp/
 __marimo__/
 
 # Additional files / directories to be omitted
-
-optuna_xgb.db
+data/*

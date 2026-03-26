@@ -17,9 +17,8 @@ from xgboost import XGBRegressor
 from evaluation import evaluate_regression
 from feature_engineering import prepare_model_frame
 
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
-DATA_PATH = PROJECT_ROOT / "data" / "processed" / "final_model_data.csv"
+DATA_PATH = "data/processed/final_model_data.csv"
 TARGET = "ND"
 TRAIN_CUTOFF = "2025-01-01"
 
@@ -127,7 +126,7 @@ def tune_xgboost(X_train, y_train):
         sys.stdout.flush()
 
     optuna.logging.set_verbosity(optuna.logging.WARNING)
-    storage = f"sqlite:///{PROJECT_ROOT / 'optuna_xgb.db'}"
+    storage = "sqlite:///optuna_xgb.db"
     study_name = "xgb_day_ahead_tuning"
     study = optuna.create_study(
         study_name=study_name,
@@ -354,9 +353,9 @@ def run_xgboost(path=DATA_PATH, tuned=True):
 
 
 
-def save_outputs(results, data_dir=None, fig_dir=None):
-    data_dir = Path(data_dir) if data_dir else PROJECT_ROOT / "data" / "processed"
-    fig_dir = Path(fig_dir) if fig_dir else PROJECT_ROOT / "figures"
+def save_outputs(results, data_dir="data/processed", fig_dir="figures"):
+    data_dir = Path(data_dir)
+    fig_dir = Path(fig_dir)
     data_dir.mkdir(parents=True, exist_ok=True)
     fig_dir.mkdir(parents=True, exist_ok=True)
 
@@ -445,7 +444,7 @@ if __name__ == "__main__":
     results = run_xgboost(tuned=True)
     save_outputs(results)
 
-    fig_dir = PROJECT_ROOT / "figures"
+    fig_dir = Path("figures")
     fig_dir.mkdir(exist_ok=True)
     save_results_png(results, fig_dir / "xgb_results_summary.png")
 
