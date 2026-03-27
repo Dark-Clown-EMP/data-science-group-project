@@ -3,9 +3,6 @@ __pycache__/
 *.py[codz]
 *$py.class
 
-# Optuna / SQLite runtime databases
-*.db
-
 # C extensions
 *.so
 

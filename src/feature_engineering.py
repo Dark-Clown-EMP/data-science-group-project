@@ -54,25 +54,19 @@ def _add_rolling_features(df, target_col="ND", windows=ROLLING_WINDOWS):
     return df
 
 
-def prepare_model_frame(df, include_weather=True, target_col="ND",
-                        lag_hours=None, rolling_windows=None):
-    if lag_hours is None:
-        lag_hours = LAG_HOURS
-    if rolling_windows is None:
-        rolling_windows = ROLLING_WINDOWS
-
+def prepare_model_frame(df, include_weather=True, target_col="ND"):
     df = _add_time_features(df)
-    df = _add_lag_features(df, target_col=target_col, lags=lag_hours)
-    df = _add_rolling_features(df, target_col=target_col, windows=rolling_windows)
+    df = _add_lag_features(df, target_col=target_col)
+    df = _add_rolling_features(df, target_col=target_col)
 
     time_features = [
         "hour", "day_of_week", "month", "day_of_year", "is_weekend",
         "hour_sin", "hour_cos", "month_sin", "month_cos",
     ]
-    lag_features = [f"{target_col}_lag_{lag}h" for lag in lag_hours]
+    lag_features = [f"{target_col}_lag_{lag}h" for lag in LAG_HOURS]
     rolling_features = [
         f"{target_col}_{stat}_{w}h"
-        for w in rolling_windows for stat in ["rmean", "rstd"]
+        for w in ROLLING_WINDOWS for stat in ["rmean", "rstd"]
     ]
 
     feature_cols = time_features + lag_features + rolling_features
