@@ -1,0 +1,41 @@
+PROJECT TITLE
+Forecasting Net Electricity Demand in Great Britain using Regional Weather + Regional Solar + National Grid Data (2020–2025)
+
+PRESENTATION LENGTH
+5 minutes total (strict).
+
+TARGET AUDIENCE
+Non‑technical but critical. They will challenge dataset validity, licensing, joins, and causality claims.
+
+ONE‑SENTENCE SUMMARY
+We combine UK‑licensed regional weather + regional solar output with national demand data to explain and forecast net electricity demand in Great Britain.
+
+THE QUESTION (FINAL)
+How do regional temperature and wind conditions, along with regional solar generation, explain and predict net electricity demand in Great Britain during a selected 6‑month window?
+
+WHAT WE HAVE DONE SO FAR
+- Collected regional solar PV generation (PV‑Live, GSP level) and converted to hourly.
+- Collected national demand data with embedded wind/solar generation (NESO Historic Demand Data).
+- Built a GSP mapping file (NESO GSP info) and auto‑mapped GSP points to official UK county boundaries (ONS CTYUA 2024) to match our region labels.
+- Built correlation scripts (ND↔Temp, Embedded Solar↔Solar_*, Embedded Wind↔Wind10m_*).
+
+KEY DELIVERABLES (SO FAR)
+- regional solar hourly dataset (solar_energy_hourly.csv)
+- GSP mapping audit (gsp_region_auto_map.csv)
+- correlation tables for ND vs regional temperature, wind, solar
+- documentation with dataset licenses
+
+WHAT WE WILL SHOW
+- 1–2 core EDA plots (correlation heatmap or top correlations)
+- A clean pipeline diagram (data sources → mapping → merge → model)
+- A modeling plan (baseline + 2 advanced models)
+
+LIMITATIONS (OWN THEM)
+- PV‑Live is estimated outturns, not meter‑exact.
+- Regional mapping uses official boundaries, but GSPs are not 1:1 with counties (we document the mapping coverage).
+- Time alignment must be done carefully (BST vs UTC) before modeling.
+
+WHY THIS IS DEFENSIBLE
+- All datasets are UK‑public and licensed (NESO Open Licence, CC BY 4.0, OGL).
+- Mapping is transparent and auditable.
+- We make predictive claims, not causal claims.
