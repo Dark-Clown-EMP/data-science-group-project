@@ -1,5 +1,5 @@
 dotenv
-numpy
+numpy<2.0
 pandas
 matplotlib
 scikit-learn
