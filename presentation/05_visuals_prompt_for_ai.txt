@@ -1,0 +1,23 @@
+PPT STYLE INSTRUCTIONS (PASTE INTO PPT‑AI)
+
+Create a clean, elegant, modern slide deck (5 minutes, ~11 slides). Use a UK‑energy theme, minimal text, and strong visuals.
+
+STYLE:
+- Color palette: deep navy + clean white + accent green/amber
+- Fonts: one modern sans serif for headers, lighter body font
+- Use icons for weather, solar, grid, data pipeline
+- Avoid clutter; 1 main graphic per slide
+- Use large numbers and short phrases
+
+VISUALS TO INCLUDE:
+- Slide 1: UK outline with energy icons + title
+- Slide 3: dataset table with license badges
+- Slide 4: pipeline diagram (Data sources → Mapping → Merge → Model)
+- Slide 5: UK map highlighting Solar_* regions (East Midlands, Norfolk, Suffolk, London, Kent, Hampshire, Cornwall, Bristol)
+- Slide 6: UK map highlighting Wind10m_* regions (Scottish Highlands, Aberdeenshire, Borders, North Wales/Gwynedd, North Cumbria, Yorkshire, Norfolk, Suffolk)
+- Slide 7: correlation heatmap or bar chart (Top 5 regions)
+- Slide 8: model comparison schematic (Baseline vs RF/XGB vs LSTM)
+- Slide 10: simple Gantt timeline (Week 1–4)
+
+TONE:
+Professional, confident, defendable. Emphasize licensing and transparency.

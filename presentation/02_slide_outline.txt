@@ -1,0 +1,54 @@
+SLIDE 1 — Title + Hook (20–25 sec)
+Title: Forecasting Net Electricity Demand in Great Britain
+Subtitle: Regional weather + regional solar + national grid data
+Hook: “What happens to GB demand when regional wind drops in Scotland?”
+
+SLIDE 2 — Problem & Question (25–30 sec)
+- Operational challenge: balancing demand vs variable renewables
+- Question (exact): How do regional temperature and wind conditions, along with regional solar generation, explain and predict net electricity demand in Great Britain (6‑month window)?
+
+SLIDE 3 — Data Sources + Licensing (35–40 sec)
+- NESO Historic Demand (national demand + embedded wind/solar) — NESO Open Data Licence
+- Sheffield Solar PV‑Live (regional solar, GSP/PES) — CC BY 4.0
+- Met Office DataPoint (regional weather) — OGL
+Emphasize: all UK‑only, public, licensed, no scraping
+
+SLIDE 4 — Data Integration Pipeline (35–40 sec)
+- PV‑Live GSP → GSP info → ONS boundaries → project regions
+- Weather stations → regional aggregation
+- Time alignment to UTC
+Output: single modeling table (ND + regional weather + regional solar)
+
+SLIDE 5 — Solar Regions Map (30–35 sec)
+- UK map highlighting Solar_* regions from final_model_data.csv
+- Show: East Midlands, Norfolk, Suffolk, London, Kent, Hampshire, Cornwall, Bristol area
+
+SLIDE 6 — Wind Regions Map (30–35 sec)
+- UK map highlighting Wind10m_* regions from final_model_data.csv
+- Show: Scottish Highlands, Aberdeenshire, Borders, North Wales (Gwynedd), North Cumbria, Yorkshire, Norfolk, Suffolk
+
+SLIDE 7 — EDA Snapshot (35–40 sec)
+- Correlation table: ND vs Temp_* (top positive/negative)
+- Embedded solar generation vs Solar_* correlations
+- Embedded wind generation vs Wind10m_* correlations
+
+SLIDE 8 — Modeling Plan (35–40 sec)
+- Baseline: seasonal‑naive or linear regression
+- Stronger models: Random Forest, XGBoost, LSTM
+- Metrics: MAE / RMSE for demand forecasting
+- Train/validation split by time (avoid leakage)
+
+SLIDE 9 — Risks & Mitigations (25–30 sec)
+- BST vs UTC mismatch → normalize timestamps
+- PV‑Live = estimated outturn → state clearly
+- Mapping coverage (~46%) → report coverage and keep audit file
+
+SLIDE 10 — Project Plan (Gantt‑style) (25–30 sec)
+Week 1: finalize weather + time alignment
+Week 2: EDA + baseline model
+Week 3: RF/XGBoost + feature engineering
+Week 4: LSTM + error analysis + final report
+
+SLIDE 11 — Closing (10–15 sec)
+- “We have licensed UK data, a clean pipeline, and a defensible plan.”
+- Ask for feedback on model choice / evaluation

@@ -1,0 +1,355 @@
+gsp_id,Name,Latitude,Longitude,ctyua_name,region_label
+1,Abham,50.472,-3.729,,
+10,Arbroath,56.564,-2.619,Angus,
+100,Ealing,51.502,-0.297,Ealing,Eng_London
+101,Eaton Socon,52.215,-0.303,Bedford,
+102,Eccles,55.668,-2.328,Scottish Borders,Scot_Borders
+103,East Claydon,51.927,-0.908,Buckinghamshire,
+104,Easterhouse,55.879,-4.073,North Lanarkshire,
+105,East Kilbride,55.785,-4.192,South Lanarkshire,
+106,East Kilbride South,55.74,-4.161,South Lanarkshire,
+107,Elderslie,55.84,-4.463,Renfrewshire,
+108,Elgin,57.662,-3.317,Moray,
+109,Elland,53.695,-1.823,Calderdale,Eng_Yorkshire
+11,Ardkinglas,56.287,-4.956,,
+11,Clachan,56.277,-4.922,,
+110,Elstree,51.66,-0.342,Hertfordshire,
+111,Enderby,52.598,-1.215,Leicestershire,Eng_East_Midlands
+112,Erskine,55.904,-4.481,Renfrewshire,
+113,Exeter,50.767,-3.406,,
+114,Fasnakyle,57.323,-4.789,,
+115,Fort Augustus,57.137,-4.715,,
+116,Fawley,50.821,-1.33,,
+117,Feckenham,52.252,-1.972,Worcestershire,Eng_West_Midlands
+118,Ferrybridge A,53.72,-1.273,North Yorkshire,Eng_Yorkshire
+119,Ferrybridge B,53.722,-1.278,Wakefield,Eng_Yorkshire
+12,Ardmore,57.554,-6.645,,
+120,Fetteresso,56.965,-2.347,Aberdeenshire,Scot_Aberdeenshire
+120,Kintore,57.213,-2.374,Aberdeenshire,Scot_Aberdeenshire
+120,Rothienorman,57.404,-2.518,Aberdeenshire,Scot_Aberdeenshire
+121,Fiddes,56.921,-2.292,Aberdeenshire,Scot_Aberdeenshire
+122,Fiddlers Ferry (Cuerdley 132kV),53.372,-2.688,Warrington,
+123,Finnieston,55.863,-4.286,Glasgow City,Scot_Glasgow_West
+124,Fourstones,55.012,-2.163,,
+125,Fraserburgh,57.686,-2.024,Aberdeenshire,Scot_Aberdeenshire
+126,Frodsham,53.309,-2.717,Cheshire West and Chester,
+127,Fort William,56.819,-5.074,,
+128,Galashiels,55.608,-2.767,Scottish Borders,Scot_Borders
+129,Giffnock,55.798,-4.298,East Renfrewshire,
+13,Axminster,50.787,-2.924,,
+130,Glenluce,54.877,-4.798,,
+131,Glenniston,56.108,-3.267,Fife,
+132,Glenrothes,56.204,-3.196,Fife,
+133,Gorgie,55.935,-3.235,City of Edinburgh,Scot_Edinburgh_East
+134,Govan,55.854,-4.314,Glasgow City,Scot_Glasgow_West
+135,Grendon,52.243,-0.726,North Northamptonshire,Eng_East_Midlands
+136,Grimsby West,53.566,-0.151,North East Lincolnshire,Eng_Yorkshire
+138,Grudie Bridge,57.615,-4.83,,
+14,Ayr,55.457,-4.587,,
+141,Haggs Road,55.83,-4.296,Glasgow City,Scot_Glasgow_West
+142,Hams Hall (Lea Marston 132kV),52.529,-1.709,Warwickshire,Eng_West_Midlands
+144,Hartmoor,54.701,-1.291,Hartlepool,
+145,Hawick,55.428,-2.791,Scottish Borders,Scot_Borders
+146,Hawthorn Pit,54.806,-1.402,County Durham,
+147,Helensburgh,56.02,-4.701,,
+148,Heysham (Barrow),54.033,-2.889,Lancashire,
+148,Heysham (NGET),54.033,-2.889,Lancashire,
+148,Ormonde (Heysham),54.033,-2.889,Lancashire,
+149,Hunterston Farm,55.743,-4.864,,
+15,Bathgate,55.9,-3.674,West Lothian,
+150,Hurst,51.436,0.154,Bexley,Eng_London
+151,Imperial Park,51.547,-3.031,Newport,Wales_South_Cardiff
+152,Indian Queens,50.395,-4.901,Cornwall,Eng_South_Cornwall
+153,Inverkeithing,56.042,-3.39,Fife,
+154,Inverness,57.452,-4.241,,
+155,Iron Acton,51.569,-2.481,South Gloucestershire,Eng_South_Bristol
+156,Ironbridge,52.632,-2.51,Shropshire,Eng_West_Midlands
+158,Iver 132kV,51.542,-0.498,Buckinghamshire,
+158,Iver 66kV,51.541,-0.497,Buckinghamshire,
+159,Johnstone,55.844,-4.504,Renfrewshire,
+16,Bainsford,56.014,-3.768,Falkirk,
+160,Jordanthorpe,53.33,-1.453,Derbyshire,Eng_East_Midlands
+161,Kaimes,55.891,-3.163,City of Edinburgh,Scot_Edinburgh_East
+162,Keadby,53.597,-0.758,,
+164,Kemsley,51.367,0.741,,
+165,Kirkby SPEN,53.469,-2.849,Knowsley,
+166,Kirkby ENW,53.469,-2.849,Knowsley,
+166,Washway Farm,53.562,-2.82,Lancashire,
+167,Killermont,55.903,-4.31,Glasgow City,Scot_Glasgow_West
+168,Killin,56.475,-4.325,Stirling,
+170,Kilmarnock South,55.58,-4.456,East Ayrshire,
+171,Kilmarnock Town,55.593,-4.487,East Ayrshire,
+172,Kilwinning,55.664,-4.678,,
+173,Kinlochleven,56.714,-4.95,,
+174,Kingsnorth,51.42,0.596,,
+175,Kirkstall B,53.806,-1.597,Leeds,Eng_Yorkshire
+176,Kitwell,52.431,-2.013,Birmingham,Eng_West_Midlands
+177,Knaresborough,54.031,-1.488,North Yorkshire,Eng_Yorkshire
+178,Lackenby,54.568,-1.133,Redcar and Cleveland,
+179,Lairg,58.008,-4.395,,
+18,Beauly,57.468,-4.49,,
+18,Orrin,57.554,-4.616,,
+180,Laleham,51.424,-0.469,Surrey,
+181,Landulph,50.444,-4.242,Cornwall,Eng_South_Cornwall
+182,Legacy,53.029,-3.052,Wrexham,Wales_North_Gwynedd
+183,Leven,56.208,-2.997,Fife,
+184,Livingston East,55.907,-3.507,West Lothian,
+185,Linnmill,55.903,-4.257,Glasgow City,Scot_Glasgow_West
+186,Lister Drive,53.419,-2.924,Liverpool,
+187,Littlebrook LPN,51.461,0.244,,
+188,Littlebrook SPN,51.461,0.244,,
+189,Lodge Road (St John's Wood),51.528,-0.171,Westminster,Eng_London
+19,Beddington LPN,51.374,-0.129,Sutton,Eng_London
+190,Loudwater (Amersham),51.664,-0.655,Buckinghamshire,
+191,Lovedean,50.916,-1.04,,
+192,Lunanhead,56.654,-2.865,Angus,
+193,Lyndhurst,56.481,-3.017,Dundee City,
+194,Macclesfield,53.269,-2.121,Cheshire East,
+195,Macduff,57.659,-2.491,Aberdeenshire,Scot_Aberdeenshire
+196,Margam (Grange 66kV),51.56,-3.754,Neath Port Talbot,Wales_South_Cardiff
+197,Mannington,50.847,-1.895,,
+198,Maybole,55.337,-4.677,,
+199,Melksham,51.392,-2.15,Wiltshire,
+2,Abernethy,56.339,-3.294,Perth and Kinross,
+20,Beddington SPN,51.374,-0.129,Sutton,Eng_London
+200,Milton of Craigie,56.469,-2.917,Dundee City,
+201,Mill Hill,51.618,-0.21,Barnet,Eng_London
+202,Minety,51.607,-2.001,Wiltshire,
+203,Mybster,58.445,-3.422,,
+204,Nairn,57.574,-3.845,,
+205,Newarthill,55.821,-3.936,North Lanarkshire,
+206,Nechells,52.507,-1.851,Birmingham,Eng_West_Midlands
+207,Neepsend,53.406,-1.489,Sheffield,Eng_Yorkshire
+208,Newton Stewart,54.948,-4.491,,
+209,New Cross 66kV,51.484,-0.061,Southwark,Eng_London
+21,Berryburn,57.504,-3.599,Moray,
+21,Cairnford,57.452,-2.85,Aberdeenshire,Scot_Aberdeenshire
+21,Dallas,57.557,-3.42,Moray,
+21,Glenfarclas,57.416,-3.316,Moray,
+21,Keith,57.538,-2.933,Moray,
+210,Northfleet East,51.428,0.33,,
+211,North Hyde,51.499,-0.411,Hillingdon,Eng_London
+212,Ninfield,50.881,0.45,East Sussex,
+213,Norton Lees,53.35,-1.47,Sheffield,Eng_Yorkshire
+214,Norwich Main,52.573,1.272,Norfolk,Eng_East_Norfolk
+214,Sheringham Shoal (Norwich),52.573,1.272,Norfolk,Eng_East_Norfolk
+215,Norton,54.592,-1.363,Stockton-on-Tees,
+216,Nursling,50.941,-1.488,,
+217,Ocker Hill,52.541,-2.033,Sandwell,Eng_West_Midlands
+218,Offerton,54.881,-1.458,Sunderland,Eng_North_Tyne
+219,Oldbury,52.499,-2.022,Sandwell,Eng_West_Midlands
+22,Berwick,55.777,-2.079,,
+220,Osbaldwick,53.956,-1.024,York,Eng_Yorkshire
+221,Padiham,53.795,-2.327,Lancashire,
+222,Paisley,55.839,-4.411,Renfrewshire,
+223,Partick,55.87,-4.316,Glasgow City,Scot_Glasgow_West
+224,Peterhead Grange,57.505,-1.784,Aberdeenshire,Scot_Aberdeenshire
+226,Pelham,51.935,0.117,Hertfordshire,
+227,Pembroke,51.682,-4.987,,
+228,Penwortham East,53.744,-2.755,Lancashire,
+229,Penn,52.556,-2.208,Staffordshire,Eng_West_Midlands
+23,Berkswell,52.387,-1.614,Solihull,Eng_West_Midlands
+230,Pentir,53.187,-4.16,,
+231,Penwortham West,53.744,-2.755,Lancashire,
+231,Stanah,53.88,-2.99,Lancashire,
+231,Walney 2 (Heysham),53.88,-2.99,Lancashire,
+232,Persley,57.174,-2.138,Aberdeen City,Scot_Aberdeenshire
+233,Pitsmoor,53.4,-1.446,Sheffield,Eng_Yorkshire
+234,Portobello,55.952,-3.123,City of Edinburgh,Scot_Edinburgh_East
+235,Poppleton,53.974,-1.133,York,Eng_Yorkshire
+236,Port Ann,56.026,-5.35,,
+237,Port Dundas,55.873,-4.254,Glasgow City,Scot_Glasgow_West
+238,Pyle,51.536,-3.688,Bridgend,Wales_South_Cardiff
+239,Quoich,57.07,-5.108,,
+24,Bicker Fen,52.931,-0.221,Lincolnshire,Eng_East_Midlands
+240,Rainhill,53.421,-2.738,St. Helens,
+241,Rannoch,56.69,-4.399,Perth and Kinross,
+242,Rassau,51.809,-3.226,Blaenau Gwent,Wales_South_Cardiff
+243,Ratcliffe,52.863,-1.253,Nottinghamshire,Eng_East_Midlands
+244,Ravenscraig,55.764,-3.929,North Lanarkshire,
+244,Wishaw,55.764,-3.929,North Lanarkshire,
+245,Rayleigh,51.594,0.569,,
+246,Redbridge,51.589,0.044,Redbridge,Eng_London
+247,Redhouse,56.145,-3.148,Fife,
+248,Redmoss,57.108,-2.092,Aberdeen City,Scot_Aberdeenshire
+249,Rochdale,53.622,-2.215,Rochdale,Eng_Manchester
+25,Birkenhead,53.366,-3.061,,
+250,Rugeley,52.754,-1.913,Staffordshire,Eng_West_Midlands
+251,Rye House,51.758,0.003,Hertfordshire,
+253,Saltholme,54.607,-1.238,Stockton-on-Tees,
+254,Saltend North,53.743,-0.238,East Riding of Yorkshire,Eng_Yorkshire
+255,St Andrews Cross,56.341,-2.796,Fife,
+256,Stoke Bardolph,52.96,-1.051,Nottinghamshire,Eng_East_Midlands
+257,Sandford,51.341,-2.839,North Somerset,Eng_South_Bristol
+257,Seabank,51.536,-2.67,"Bristol, City of",Eng_South_Bristol
+258,Sellindge,51.106,0.978,,
+259,St Fergus Gas Terminal,57.579,-1.841,Aberdeenshire,Scot_Aberdeenshire
+26,Bishops Wood,52.312,-2.243,Worcestershire,Eng_West_Midlands
+260,St Fillans,56.435,-4.065,Perth and Kinross,
+261,Sheffield City,53.375,-1.477,Sheffield,Eng_Yorkshire
+262,Shin,57.938,-4.404,,
+263,Shrubhill,55.965,-3.185,City of Edinburgh,Scot_Edinburgh_East
+264,Shrewsbury,52.71,-2.693,Shropshire,Eng_West_Midlands
+265,Sighthill,55.926,-3.3,City of Edinburgh,Scot_Edinburgh_East
+266,St John's Wood,51.527,-0.172,Westminster,Eng_London
+267,Skelton Grange,53.776,-1.496,Leeds,Eng_Yorkshire
+268,Sloy,56.246,-4.704,,
+269,South Manchester,53.422,-2.275,Trafford,Eng_Manchester
+27,Blyth 66kV,55.141,-1.531,,
+270,Spango Valley,55.936,-4.811,Inverclyde,
+271,Spennymoor,54.705,-1.554,County Durham,
+272,South Shields,54.973,-1.45,South Tyneside,Eng_North_Tyne
+273,Stalybridge,53.492,-2.044,Tameside,Eng_Manchester
+274,Staythorpe,53.077,-0.869,Nottinghamshire,Eng_East_Midlands
+275,Stella North,54.978,-1.724,Newcastle upon Tyne,Eng_North_Tyne
+276,Stella South,54.974,-1.733,Gateshead,Eng_North_Tyne
+277,Strathaven,55.753,-4.08,South Lanarkshire,
+278,Stirling,56.116,-3.915,Stirling,
+279,Strathleven,55.947,-4.576,West Dunbartonshire,
+28,Blyth 132kV,55.141,-1.531,,
+280,Sundon,51.933,-0.502,Central Bedfordshire,
+281,Swansea North,51.683,-3.961,,
+282,Tarland,57.152,-2.788,Aberdeenshire,Scot_Aberdeenshire
+283,Taunton,51.017,-3.153,Somerset,
+284,Taynuilt,56.43,-5.214,,
+285,Telford Road,55.962,-3.241,City of Edinburgh,Scot_Edinburgh_East
+286,Templeborough,53.412,-1.385,Rotherham,Eng_Yorkshire
+287,Thorpe Marsh,53.579,-1.087,Doncaster,Eng_Yorkshire
+288,Thurso,58.572,-3.509,,
+289,Thurcroft,53.405,-1.267,Rotherham,Eng_Yorkshire
+29,Boat of Garten,57.249,-3.723,,
+290,Tilbury,51.461,0.392,Thurrock,
+291,Tottenham,51.604,-0.049,Haringey,Eng_London
+292,Trawsfynydd,52.929,-3.951,,
+293,Tummel Bridge,56.706,-4.016,Perth and Kinross,
+294,Tynemouth 11kV,55.024,-1.499,North Tyneside,Eng_North_Tyne
+294,Tynemouth 132kV,55.024,-1.499,North Tyneside,Eng_North_Tyne
+295,Upper Boat 132kV,51.575,-3.298,Rhondda Cynon Taf,Wales_South_Cardiff
+295,Upper Boat 33kV,51.576,-3.3,Rhondda Cynon Taf,Wales_South_Cardiff
+296,Walham,51.872,-2.266,Gloucestershire,
+297,Walpole (_A),52.728,0.199,Norfolk,Eng_East_Norfolk
+298,Walpole (_B),52.728,0.199,Norfolk,Eng_East_Norfolk
+299,Warley,51.553,0.301,Havering,Eng_London
+3,Aberthaw,51.385,-3.403,,
+30,Bolney,50.974,-0.236,West Sussex,
+300,Watford South,51.642,-0.405,Hertfordshire,
+301,West Boldon,54.94,-1.472,South Tyneside,Eng_North_Tyne
+302,West Burton,53.36,-0.807,Nottinghamshire,Eng_East_Midlands
+303,Westfield,56.163,-3.296,Fife,
+304,West George Street,55.863,-4.264,Glasgow City,Scot_Glasgow_West
+305,Whitegate,53.53,-2.164,Oldham,Eng_Manchester
+306,Whitehouse,55.93,-3.199,City of Edinburgh,Scot_Edinburgh_East
+307,Wincobank,53.413,-1.418,Sheffield,Eng_Yorkshire
+308,Willenhall,52.577,-2.06,Wolverhampton,Eng_West_Midlands
+309,Willington,52.856,-1.549,Derbyshire,Eng_East_Midlands
+31,Bonnybridge,56.007,-3.86,Falkirk,
+311,Willowdale,57.154,-2.097,Aberdeen City,Scot_Aberdeenshire
+312,West Melton,53.502,-1.378,Rotherham,Eng_Yorkshire
+313,Woodhill,57.154,-2.146,Aberdeen City,Scot_Aberdeenshire
+314,West Thurrock,51.472,0.289,Thurrock,
+315,West Weybridge,51.348,-0.489,Surrey,
+316,Wylfa,53.414,-4.482,,
+317,Wymondley,51.929,-0.25,Hertfordshire,
+318,Acton Lane 22kV,51.535,-0.257,Brent,Eng_London
+319,Axminster H,50.787,-2.924,,
+32,Botley Wood,50.885,-1.233,,
+322,Barking West,51.516,0.107,,
+323,Canterbury,51.292,1.094,,
+324,Cowley,51.71,-1.191,Oxfordshire,
+325,East Claydon,51.927,-0.908,Buckinghamshire,
+326,Hackney 132kV,51.559,-0.041,Hackney,Eng_London
+327,Hackney 66kV,51.56,-0.044,Hackney,Eng_London
+328,Harker,54.942,-2.964,Cumberland,Eng_North_Cumbria
+328,Robin Rigg (Harker),54.942,-2.964,Cumberland,Eng_North_Cumbria
+329,Hutton,54.298,-2.672,,
+33,Braco West,56.276,-3.878,Perth and Kinross,
+330,Islington,51.561,-0.113,Islington,Eng_London
+331,Kearsley 132kV,53.538,-2.359,Bolton,Eng_Manchester
+332,Kearsley 33kV,53.538,-2.359,Bolton,Eng_Manchester
+333,Peterhead Shell,57.508,-1.784,Aberdeenshire,Scot_Aberdeenshire
+334,Richborough,51.309,1.346,,
+336,Strichen,57.586,-2.07,Aberdeenshire,Scot_Aberdeenshire
+337,Tongland,54.855,-4.026,,
+338,West Ham,51.52,0.002,,
+339,Wimbledon North,51.431,-0.188,Merton,Eng_London
+34,Braintree,51.865,0.576,,
+340,Wimbledon South,51.431,-0.188,Merton,Eng_London
+341,Willesden 132kV,51.535,-0.257,Brent,Eng_London
+342,Willesden 66kV,51.535,-0.257,Brent,Eng_London
+35,Braehead Park,55.881,-4.381,Renfrewshire,
+36,Bradford West,53.81,-1.867,Bradford,Eng_Yorkshire
+37,Bredbury,53.415,-2.131,Stockport,Eng_Manchester
+38,Bramford,52.07,1.063,Suffolk,Eng_East_Suffolk
+38,Clacton (Bramford),51.826,1.179,,
+39,Bridge of Dun,56.72,-2.557,Angus,
+4,Acton Lane 66kV,51.535,-0.257,Brent,Eng_London
+4,Canal Bank (Willesden 66kV),51.535,-0.257,Brent,Eng_London
+4,Greenford (Willesden 66kV),51.535,-0.257,Brent,Eng_London
+4,Perivale (Willesden 66kV),51.535,-0.257,Brent,Eng_London
+4,Wesley Avenue (Willesden 66kV),51.535,-0.257,Brent,Eng_London
+40,Brimsdown,51.664,-0.025,Enfield,Eng_London
+41,Bramley,51.335,-1.077,,
+41,Fleet,51.25,-0.881,,
+42,Broadford,57.248,-5.936,,
+43,Brora,58.02,-3.875,,
+44,Broxburn,55.919,-3.453,West Lothian,
+45,Bridgewater,51.117,-2.969,Somerset,
+46,Burghmuir,56.397,-3.488,Perth and Kinross,
+47,Burwell Main,52.28,0.312,Cambridgeshire,
+48,Bushbury,52.636,-2.115,Wolverhampton,Eng_West_Midlands
+49,Bustleholme,52.553,-1.964,Sandwell,Eng_West_Midlands
+50,Carradale,55.59,-5.502,,
+51,Carsfad,55.144,-4.189,,
+51,Earlstoun,55.11,-4.169,,
+51,Glenlee,55.097,-4.181,,
+51,Kendoon,55.161,-4.181,,
+52,Camblesforth 66kV (Drax),53.729,-1.001,North Yorkshire,Eng_Yorkshire
+54,Capenhurst,53.266,-2.948,Cheshire West and Chester,
+55,Cardiff East,51.495,-3.145,Cardiff,Wales_South_Cardiff
+56,Carrington,53.435,-2.4,Trafford,Eng_Manchester
+57,Cassley,56.542,-4.517,Perth and Kinross,
+58,Carntyne,55.857,-4.197,Glasgow City,Scot_Glasgow_West
+59,Ceannacroc,57.154,-4.937,,
+6,Alness,57.708,-4.274,,
+60,Cellarhead,53.041,-2.086,Staffordshire,Eng_West_Midlands
+61,Chapelcross,55.014,-3.221,,
+62,Charleston,56.474,-3.045,Dundee City,
+63,Charlotte Street,55.855,-4.239,Glasgow City,Scot_Glasgow_West
+64,Chickerell,50.624,-2.489,,
+65,Chessington,51.343,-0.323,Kingston upon Thames,Eng_London
+66,Chesterfield,53.224,-1.387,Derbyshire,Eng_East_Midlands
+67,City Road,51.531,-0.096,Islington,Eng_London
+68,Clayhills,57.14,-2.099,Aberdeen City,Scot_Aberdeenshire
+69,Clyde’s Mill,55.822,-4.149,South Lanarkshire,
+7,Alpha Steel (Uskmouth),51.549,-2.976,Newport,Wales_South_Cardiff
+7,Uskmouth,51.549,-2.976,Newport,Wales_South_Cardiff
+70,Coatbridge,55.851,-4.013,North Lanarkshire,
+71,Cockenzie,55.967,-2.967,East Lothian,
+72,Connah's Quay,53.228,-3.073,Flintshire,Wales_North_Gwynedd
+72,St Asaph (Bodelwyddan),53.257,-3.469,Denbighshire,Wales_North_Gwynedd
+73,Coupar Angus,56.538,-3.273,Perth and Kinross,
+74,Coventry,52.456,-1.464,Warwickshire,Eng_West_Midlands
+76,Coylton,55.447,-4.429,East Ayrshire,
+77,Craigiebuckler,57.131,-2.153,Aberdeen City,Scot_Aberdeenshire
+78,Creyke Beck,53.801,-0.414,East Riding of Yorkshire,Eng_Yorkshire
+8,Alverdiscott,51.006,-4.137,,
+80,Cumbernauld,55.947,-3.964,North Lanarkshire,
+81,Cupar,56.314,-3.035,Fife,
+82,Currie,55.902,-3.309,City of Edinburgh,Scot_Edinburgh_East
+83,Dalmarnock,55.835,-4.204,South Lanarkshire,
+84,Devol Moor,55.927,-4.677,Inverclyde,
+85,Devonside,56.137,-3.779,Clackmannanshire,
+86,Dewar Place,55.947,-3.209,City of Edinburgh,Scot_Edinburgh_East
+87,Dounreay,58.576,-3.754,,
+88,Drakelow,52.773,-1.649,Derbyshire,Eng_East_Midlands
+89,Drax 132kV,53.732,-0.993,North Yorkshire,Eng_Yorkshire
+9,Amersham Main,51.664,-0.655,Buckinghamshire,
+90,Drumcross,55.906,-3.588,West Lothian,
+91,Drumchapel,55.916,-4.349,Glasgow City,Scot_Glasgow_West
+92,Dunbeath,58.253,-3.43,,
+93,Dudhope,56.462,-2.95,,
+94,Dunvegan,57.428,-6.531,,
+96,Dunbar,55.977,-2.573,East Lothian,
+97,Dunfermline,56.09,-3.449,Fife,
+98,Dunoon,55.975,-4.94,,
+99,Dyce,57.211,-2.181,Aberdeen City,Scot_Aberdeenshire

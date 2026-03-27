@@ -208,3 +208,8 @@ __marimo__/
 
 # Additional files / directories to be omitted
 data/*
+
+# Large local datasets should not be committed to GitHub
+regional_solar_2020_2025.csv
+regional_solar_2020_2025_labeled.csv
+solar_energy_hourly.csv
