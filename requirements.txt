@@ -1,3 +1,5 @@
+xgboost
+optuna
 dotenv
 numpy<2.0
 pandas
