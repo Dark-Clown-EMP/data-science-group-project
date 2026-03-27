@@ -10,3 +10,5 @@ requests
 tensorflow
 scikit-learn
 keras_tuner
+seaborn
+statsmodels
