@@ -33,7 +33,7 @@ scaler = MinMaxScaler(feature_range=(0,1))
 
 # --- Configuration ---
 target_col_index = 0
-time_steps = [3, 6, 12, 24, 48, 3*30*24, 24*365]
+time_steps = [24, 48, 72, 7*24, 30*24, 24*365]
 
 # 2. Sequential Train/Test Split
 split_idx = int(len(data) * 0.8)
@@ -88,11 +88,8 @@ def inverse_transform_target(scaled_1d_array, scaler, target_index, n_features):
     return unscaled_matrix[:, target_index]
 
 def mean_abs_error(y_true : List[float], y_pred: List[float]) -> float:
-    n = len(y_true)
-    sum = 0
-    for i in range(n):
-        sum += abs(y_pred[i] - y_true[i])/y_true[i]
-    return sum / n
+    epsilon = 1e-10
+    return np.mean(np.abs((y_true - y_pred) / (y_true + epsilon))) * 100
 
 num_features = train_data.shape[1]
 

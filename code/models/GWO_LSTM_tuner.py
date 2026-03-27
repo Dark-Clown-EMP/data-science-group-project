@@ -4,10 +4,10 @@ import gc
 import os
 import random
 import tensorflow as tf
-from tensorflow import keras
-from tensorflow.keras import backend as K
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import LSTM, Dense, Dropout
+from tensorflow import keras #type:ignore
+from tensorflow.keras import backend as K #type:ignore
+from tensorflow.keras.models import Sequential #type:ignore
+from tensorflow.keras.layers import LSTM, Dense, Dropout #type:ignore
 
 def build_advanced_lstm(input_shape, units, dropout, lr, num_layers, activation_idx):
     """Builds a stacked LSTM based on GWO discovered parameters."""
@@ -30,7 +30,7 @@ def build_advanced_lstm(input_shape, units, dropout, lr, num_layers, activation_
     model.compile(optimizer=keras.optimizers.Adam(learning_rate=lr), loss='mse')
     return model
 
-def tune_lstm_with_gwo_advanced(X_train_2d, y_train, X_test_2d, y_test, n_wolves=5, iterations=20, seed=42):
+def tune_lstm_with_gwo_advanced(X_train_2d, y_train, X_test_2d, y_test, n_wolves=5, iterations=30, seed=42):
     
     # --- 0. LOCK DOWN DETERMINISM ---
     os.environ['PYTHONHASHSEED'] = str(seed)
@@ -76,7 +76,7 @@ def tune_lstm_with_gwo_advanced(X_train_2d, y_train, X_test_2d, y_test, n_wolves
             
             # Train on the FULL dataset
             hist = model.fit(X_train_3d, y_train, validation_split=0.2,
-                             epochs=10, batch_size= 64, verbose=0, callbacks=[early_stop])
+                             epochs=20, batch_size= 64, verbose=0, callbacks=[early_stop])
             
             # Fitness evaluation
             fitness = min(hist.history['val_loss'])

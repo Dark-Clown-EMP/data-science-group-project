@@ -1,5 +1,5 @@
 import tensorflow as tf
-from tensorflow.keras.layers import LSTM, Dropout
+from tensorflow.keras.layers import LSTM, Dropout #type:ignore
 
 # 1. Load your saved model
 model = tf.keras.models.load_model('GWO_best_model.keras')
