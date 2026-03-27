@@ -53,10 +53,10 @@ def main():
     
     # Using the tuned parameters
     rf = RandomForestRegressor(
-        n_estimators=800,
-        min_samples_split=10, 
+        n_estimators=1200,
+        min_samples_split=2, 
         max_features=0.3,
-        max_depth=None, 
+        max_depth=15, 
         min_samples_leaf=1, 
         bootstrap=True,
         n_jobs=-1, 
