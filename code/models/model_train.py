@@ -9,7 +9,7 @@ import tensorflow as tf
 import json
 from GWO_LSTM_tuner import tune_lstm_with_gwo_advanced
 
-version_num = '1.0'
+version_num = '5.0'
 
 def set_global_determinism(seed=42):
     os.environ['PYTHONHASHSEED'] = str(seed)
@@ -33,7 +33,7 @@ scaler = MinMaxScaler(feature_range=(0,1))
 
 # --- Configuration ---
 target_col_index = 0
-time_steps = [3, 6, 12, 24, 48, 3*30*24, 24*365]
+time_steps = [24, 48, 72, 7*24, 30*24, 24*365]
 
 # 2. Sequential Train/Test Split
 split_idx = int(len(data) * 0.8)
@@ -88,11 +88,8 @@ def inverse_transform_target(scaled_1d_array, scaler, target_index, n_features):
     return unscaled_matrix[:, target_index]
 
 def mean_abs_error(y_true : List[float], y_pred: List[float]) -> float:
-    n = len(y_true)
-    sum = 0
-    for i in range(n):
-        sum += abs(y_pred[i] - y_true[i])/y_true[i]
-    return sum / n
+    epsilon = 1e-10
+    return np.mean(np.abs((y_true - y_pred) / (y_true + epsilon))) * 100
 
 num_features = train_data.shape[1]
 
@@ -110,8 +107,8 @@ print("MAPE test: ", mape_test)
 final_model.save(f'GWO_best_model_v{version_num}.keras')
 
 # 8. Align Datetime Indices
-max_lag = 365 * 24  
-split_idx = int(len(df_original) * 0.8) 
+max_lag = 365 * 24
+split_idx = int(len(df_original) * 0.8)
 
 train_dates = df_original['datetime'].iloc[max_lag : split_idx].values
 test_dates = df_original['datetime'].iloc[split_idx + max_lag : ].values

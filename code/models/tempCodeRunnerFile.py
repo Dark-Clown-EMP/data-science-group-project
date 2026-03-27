@@ -1,15 +1,26 @@
+import pandas as pd
+import numpy as np
+from sklearn.metrics import mean_absolute_error, root_mean_squared_error, r2_score, mean_absolute_percentage_error
+
+csvList = ['training', 'testing']
+columnList = ['Train', 'Test']
+
+for i, str in enumerate(csvList):
+# 1. Load the dataset
+    df = pd.read_csv(f'LSTM_GWO_{str}_results_with_dates.csv')
 
 
-# # 1. Print the hyperparameters neatly to the console
-# print("--- Best Hyperparameters ---")
-# best_params_dict = best_hps.values
+    y_true = df[f'Actual_{columnList[i]}']
+    y_pred = df[f'Predicted_{columnList[i]}']
+    print(f'\n\n{str} scores')
+    # 3. Calculate Scores
+    r2 = r2_score(y_true, y_pred)
+    mae = mean_absolute_error(y_true, y_pred)
+    rmse = root_mean_squared_error(y_true, y_pred)
+    mape = mean_absolute_percentage_error(y_true, y_pred)
 
-# for param_name, param_value in best_params_dict.items():
-#     print(f"{param_name}: {param_value}")
-# print("----------------------------")
-
-# # 2. Save the hyperparameters to a JSON file for future reference
-# with open('best_hyperparameters.json', 'w') as f:
-#     json.dump(best_params_dict, f, indent=4)
-    
-# print("Hyperparameters successfully saved to 'best_hyperparameters.json'")
+    # 4. Print results
+    print(f"R² Score: {r2:.4f}")
+    print(f"MAE:      {mae:.4f}")
+    print(f"RMSE:     {rmse:.4f}")
+    print(f"MAPE:     {mape:.4%}") # Displayed as a percentage
