@@ -1,4 +1,9 @@
 dotenv
-pandas
 numpy
+pandas
+matplotlib
+scikit-learn
+shap
+jupyter
+ipykernel
 requests
