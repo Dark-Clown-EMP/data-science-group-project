@@ -9,7 +9,7 @@ import tensorflow as tf
 import json
 from GWO_LSTM_tuner import tune_lstm_with_gwo_advanced
 
-version_num = '1.0'
+version_num = '5.0'
 
 def set_global_determinism(seed=42):
     os.environ['PYTHONHASHSEED'] = str(seed)
@@ -110,8 +110,8 @@ print("MAPE test: ", mape_test)
 final_model.save(f'GWO_best_model_v{version_num}.keras')
 
 # 8. Align Datetime Indices
-max_lag = 365 * 24  
-split_idx = int(len(df_original) * 0.8) 
+max_lag = 365 * 24
+split_idx = int(len(df_original) * 0.8)
 
 train_dates = df_original['datetime'].iloc[max_lag : split_idx].values
 test_dates = df_original['datetime'].iloc[split_idx + max_lag : ].values
