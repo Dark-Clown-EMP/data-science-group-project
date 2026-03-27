@@ -7,3 +7,6 @@ shap
 jupyter
 ipykernel
 requests
+tensorflow
+scikit-learn
+keras_tuner

@@ -21,7 +21,7 @@ start_date = "2020-01-01"
 end_date = "2025-12-31"
 
 # Comprehensive UK Regional Coordinates for Weather API
-# Includes England (spread), Scotland, Wales, and Northern Ireland
+# Includes England (spread), Scotland, Wales
 
 uk_regions = {
 
@@ -58,13 +58,12 @@ uk_regions = {
     "Eng_South_Bristol":   [ 51.4545, -2.5879]
 }
 
-# Coordinates for Grimsby (Near Offshore Wind Farms)
 
 
-headers = {
-    "apikey": API_TOKEN,
-    "accept": "application/json"
-}
+# headers = {
+#     "apikey": API_TOKEN,
+#     "accept": "application/json"
+# }
 
 def get_region_data():
     return uk_regions
@@ -86,7 +85,6 @@ for key, location in uk_regions.items():
         print('✅ Data already exists')
         continue
 
-    # Open-Meteo does NOT need headers
     response = requests.get(url, params=params)
 
     if response.status_code == 200:
