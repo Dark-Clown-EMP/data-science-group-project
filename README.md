@@ -4,5 +4,9 @@ pip install -r requirements.txt
 
 API keys necessary should be added in a file in the root directory named .env and should be given the following names:
 
-Pritha Bera
-Fatima Akhtar
+1. "MET_DATA_API_KEY" for weather data
+
+Project done by:
+
+Fatima Akhtar, Pritha Bera, Emil Mathew, Sandeep Rai
+
